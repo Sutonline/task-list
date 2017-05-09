@@ -24,6 +24,8 @@
         <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
         <thymeleaf.version>3.0.0.RELEASE</thymeleaf.version>
+        <mysql.version>5.1.6</mysql.version>
+        <druid.version>1.0.18</druid.version>
     </properties>
 
     <dependencies>
@@ -61,6 +63,16 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
         </dependency>
     </dependencies>
 
