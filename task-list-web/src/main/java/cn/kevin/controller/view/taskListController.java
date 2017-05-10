@@ -14,7 +14,7 @@ public class taskListController {
 
     @RequestMapping(value = "/taskList")
     public String taskList() {
-        log.info("开始执行方法: {}", "taskList");
+        log.debug("开始执行方法: {}", "taskList");
         return "task-list";
     }
 
