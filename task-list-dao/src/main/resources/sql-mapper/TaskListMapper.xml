@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kevin.dao.TaskListMapper">
+    <resultMap id="BaseResultMap" type="cn.kevin.domain.TaskList">
+        <constructor>
+            <idArg column="ID" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="CONTENT" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="STATE" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="CREATE_DATE" jdbcType="DATE" javaType="java.util.Date"/>
+            <arg column="UPDATE_DATE" jdbcType="DATE" javaType="java.util.Date"/>
+            <arg column="REMARK" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+
+    <sql id="allField">
+        ID, CONTENT, STATE, CREATE_DATE, UPDATE_DATE, REMARK
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM todo_list
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="cn.kevin.domain.TaskList">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into todo_list (CONTENT, STATE, CREATE_DATE,
+        UPDATE_DATE, REMARK)
+        values (#{content,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE},
+        #{updateDate,jdbcType=DATE}, #{remark,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.TaskList">
+        UPDATE todo_list
+        SET CONTENT = #{content,jdbcType=VARCHAR},
+        STATE = #{state,jdbcType=VARCHAR},
+        CREATE_DATE = #{createDate,jdbcType=DATE},
+        UPDATE_DATE = #{updateDate,jdbcType=DATE},
+        REMARK = #{remark,jdbcType=VARCHAR}
+        WHERE ID = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="allField"/>
+        from todo_list
+        where ID = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="allField"/>
+        from todo_list
+    </select>
+</mapper>

@@ -14,5 +14,7 @@
     <context:component-scan base-package="cn.kevin.controller"/>
     <mvc:annotation-driven/>
 
-
+    <import resource="spring-datasource-druid.xml" />
+    <import resource="spring-config-tx.xml" />
+    <import resource="spring-config-mybatis.xml" />
 </beans>

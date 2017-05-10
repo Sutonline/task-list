@@ -1,0 +1,30 @@
+package cn.kevin.dao;
+
+import cn.kevin.domain.TaskList;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/**
+ * 用来测试mybatis生成的代码是否可用
+ * Created by yongkang.zhang on 2017/5/10.
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"/spring-config.xml", "classpath:application-dev.properties"})
+public class TaskListTest {
+
+    @Autowired
+    private TaskListMapper taskListMapper;
+
+    @Test
+    public void testInsert() {
+        TaskList taskList = new TaskList();
+        taskList.setContent("xxxx");
+        taskList.setState("02");
+        taskListMapper.insert(taskList);
+    }
+
+
+}
