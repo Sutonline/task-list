@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
@@ -23,6 +23,9 @@
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script th:src="@{/static/js/jquery-1.12.4.js}" type="text/javascript"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+    <script th:src="@{/static/plugins/bootstrap-3.3.7-dist/js/bootstrap.js}" type="text/javascript"></script>
 </head>
 
 <body>
@@ -58,7 +61,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
                 <li class="active"><a href="#">Current <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">New Task</a></li>
+                <li><a href="#" id="newTaskButton" data-toggle="modal">New Task</a></li>
                 <li><a href="#">Activities</a></li>
                 <li><a href="#">History</a></li>
             </ul>
@@ -230,6 +233,47 @@
                     </tbody>
                 </table>
             </div>
+            <div>
+                <!-- Modal HTML -->
+                <div id="newTask" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
+                                <h4 class="modal-title">Add Todo</h4>
+                            </div>
+                            <form class="form-inline">
+                                <div class="modal-body">
+                                    <!--<p>Do you want to save changes you made to document before closing?</p>
+                                    <p class="text-warning">
+                                        <small>If you don't save, your changes will be lost.</small>
+                                    </p>-->
+
+                                    <!-- form start -->
+                                    <select class="form-control" id="inlineFormCustomSelect" style="width: 20%">
+                                        <option selected>Choose...</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+
+                                    <!--<label class="sr-only" for="inlineFormInput">Name</label>-->
+                                    <input type="text" class="form-control " id="inlineFormInput"
+                                           placeholder="Something to do" style="width: 79%">
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
+                                    <button type="button" class="btn btn-primary" id="SaveTask">Save changes</button>
+                                </div>
+                                <!-- form end -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -239,8 +283,20 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script th:src="@{/static/js/jquery-1.12.1.js}" type="text/javascript"/>
-<script th:src="@{/static/plugins/bootstrap-3.3.7-dist/js/bootstrap.js}" type="text/javascript"/>
+<script>
+$(function(){
+    //绑定新增任务按钮
+    $('#newTaskButton').on('click', function(){
+       $('#inlineFormInput').val('');
+       $('#newTask').modal('toggle');
+
+    });
+
+    //绑定保存按钮
+    $('#SaveTask').on('click', function() {
+       $('#newTask').modal('hide');
+    });
+});
+</script>
 </body>
 </html>
