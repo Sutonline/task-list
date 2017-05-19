@@ -15,10 +15,11 @@
         <property name="location" value="classpath:/application-dev.properties" />
     </bean>
 
-    <context:component-scan base-package="cn.kevin.controller"/>
+    <context:component-scan base-package="cn.kevin.controller, cn.kevin.service"/>
     <mvc:annotation-driven/>
 
     <import resource="spring-datasource-druid.xml" />
     <import resource="spring-config-tx.xml" />
     <import resource="spring-config-mybatis.xml" />
+    <import resource="spring-config-security.xml" />
 </beans>

@@ -6,4 +6,10 @@ package cn.kevin.util;
 public class Constants {
 
     public static final String SUCCESS = "success";
+
+    /**
+     * 返回controller的信息
+     */
+    public static final String TIP_MESSAGE = "tipMessage";
+
 }

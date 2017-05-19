@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kevin.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="cn.kevin.domain.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="userAll">
+        ID, NAME, SEX, PHONE, EMAIL, PASSWORD, REMARK
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM todo_user
+        WHERE id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="cn.kevin.domain.User">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into todo_user (name, sex, phone,
+        email, password, remark
+        )
+        values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.User">
+        UPDATE todo_user
+        SET name     = #{name,jdbcType=VARCHAR},
+            sex      = #{sex,jdbcType=VARCHAR},
+            phone    = #{phone,jdbcType=VARCHAR},
+            email    = #{email,jdbcType=VARCHAR},
+            password = #{password,jdbcType=VARCHAR},
+            remark   = #{remark,jdbcType=VARCHAR}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            id,
+            name,
+            sex,
+            phone,
+            email,
+            password,
+            remark
+        FROM todo_user
+        WHERE id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+            id,
+            name,
+            sex,
+            phone,
+            email,
+            password,
+            remark
+        FROM todo_user
+    </select>
+    <select id="selectByUser" resultMap="BaseResultMap" parameterType="cn.kevin.domain.User">
+      SELECT
+          <include refid="userAll" />
+      FROM todo_user
+      <where>
+          <if test="name != null">
+              name = #{name}
+          </if>
+          <if test="sex != null">
+              sex = #{sex}
+          </if>
+          <if test="phone != null">
+              phone = #{phone}
+          </if>
+          <if test="email != null">
+              email = #{email}
+          </if>
+          <if test="password != null">
+              password = #{password}
+          </if>
+          <if test="remark != null">
+              remark = #{remark}
+          </if>
+      </where>
+    </select>
+
+</mapper>

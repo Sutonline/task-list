@@ -56,7 +56,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="cn.kevin.dao" targetProject="D:/Desktop/Work/git/tasklist/task-list-dao/src/main/java">
         </javaClientGenerator>
 
-        <table tableName="todo_list" domainObjectName="TaskList">
+        <table tableName="todo_user" domainObjectName="User">
             <!-- optional   , only for mybatis3 runtime
                  自动生成的键值（identity,或者序列值）
                如果指定此元素，MBG将会生成<selectKey>元素，然后将此元素插入到SQL Map的<insert> 元素之中

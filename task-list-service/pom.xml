@@ -11,7 +11,11 @@
 
     <artifactId>task-list-service</artifactId>
 
+    <properties>
+    </properties>
 
+    <dependencies>
+    </dependencies>
 
 
 </project>

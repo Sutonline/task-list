@@ -11,6 +11,7 @@
 
     <properties>
         <jackson.version>2.8.5</jackson.version>
+        <spring.security.version>4.2.2.RELEASE</spring.security.version>
     </properties>
 
     <artifactId>task-list-web</artifactId>
@@ -21,6 +22,16 @@
     </build>
 
     <dependencies>
+        <dependency>
+            <groupId>cn.kevin</groupId>
+            <artifactId>task-list-service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.kevin</groupId>
+            <artifactId>task-list-iservice</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
@@ -50,6 +61,11 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>${spring.security.version}</version>
         </dependency>
     </dependencies>
 
