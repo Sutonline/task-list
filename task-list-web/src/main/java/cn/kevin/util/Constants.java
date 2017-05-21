@@ -12,4 +12,9 @@ public class Constants {
      */
     public static final String TIP_MESSAGE = "tipMessage";
 
+    /**
+     * session存储登陆的用户
+     */
+    public static final String LOGIN_USER = "name";
+
 }

@@ -15,10 +15,23 @@
     </properties>
 
     <artifactId>task-list-web</artifactId>
+    <packaging>war</packaging>
     <build>
-        <plugins>
-
-        </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 
     <dependencies>
@@ -68,5 +81,23 @@
             <version>${spring.security.version}</version>
         </dependency>
     </dependencies>
+
+
+    <profiles>
+        <profile>
+            <id>development</id>
+            <properties>
+                <log.base>c:/export/Logs/task-list</log.base>
+                <log.appender>console</log.appender>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <log.base>/export/Logs/task-list</log.base>
+                <log.appender>file-appender</log.appender>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

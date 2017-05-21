@@ -5,6 +5,7 @@ import cn.kevin.util.ThreadLocalHelper;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
+import org.apache.struts.chain.contexts.ServletActionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import cn.kevin.service.LoginService;
+
+import javax.servlet.http.HttpSession;
+
 /**
  * Created by yongkang.zhang on 2017/5/19.
  */
@@ -30,7 +34,7 @@ public class LoginViewController {
     }
 
     @PostMapping(value = "/login")
-    public ModelAndView login(@Param(value = "name") String name, @Param(value = "password") String password) {
+    public ModelAndView login(@Param(value = "name") String name, @Param(value = "password") String password, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView();
         if (Strings.isNullOrEmpty(name) || Strings.isNullOrEmpty(password)) {
             String message = "用户名或密码为空，不能登录";
@@ -42,7 +46,7 @@ public class LoginViewController {
         // 根据username去获取，然后进行
         boolean login = loginService.login(name, password);
         if (login) {
-            ThreadLocalHelper.set(name);
+            session.setAttribute(Constants.LOGIN_USER, name);
             modelAndView.setViewName("redirect:/taskList/list");
         } else {
             modelAndView.addObject(Constants.TIP_MESSAGE, "用户名或密码错误");

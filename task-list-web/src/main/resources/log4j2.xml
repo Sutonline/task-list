@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration monitorInterval="60">
     <Properties>
-        <Property name="log-path">c:/export/Logs/task-list</Property>
+        <Property name="log-path">${log.base}</Property>
         <Property name="archive">${log-path}/archive</Property>
     </Properties>
 
@@ -23,11 +23,11 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="cn.kevin" level="info">
+        <!-- <Logger name="cn.kevin" level="info">
             <AppenderRef ref="file-appender" />
-        </Logger>
+        </Logger>-->
         <Root level="info">
-            <AppenderRef ref="console" />
+            <AppenderRef ref="${log.appender}"/>
         </Root>
 
     </Loggers>
