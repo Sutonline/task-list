@@ -1,8 +1,12 @@
 #### TaskList
 
-拥有属性:
-content, addDate, updateDate, state,
-category, priority
+#### TODO
+1. 任务的编辑
+2. 退出
+3. 历史任务显示和查询
+4. 统计
+
+
 
 统计:
 

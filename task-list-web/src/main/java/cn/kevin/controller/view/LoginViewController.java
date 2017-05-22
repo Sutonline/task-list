@@ -55,4 +55,13 @@ public class LoginViewController {
 
         return modelAndView;
     }
+
+    @GetMapping(value = "/signOut")
+    public String loginOut(HttpSession session) {
+        String attribute = (String) session.getAttribute(Constants.LOGIN_USER);
+        if (! Strings.isNullOrEmpty(attribute)) {
+            session.removeAttribute(Constants.LOGIN_USER);
+        }
+        return "login";
+    }
 }

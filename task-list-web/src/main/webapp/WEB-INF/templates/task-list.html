@@ -49,6 +49,7 @@
                 <li><a href="#">NewTask</a></li>-->
                 <!--<li><a href="#">Profile</a></li>
                 <li><a href="#">Help</a></li>-->
+                <li><a href="/login/signOut" id="signOut">退出</a></li>
             </ul>
             <!--<form class="navbar-form navbar-right">
                 <input type="text" class="form-control" placeholder="Search...">
@@ -75,7 +76,7 @@
                     <thead>
                     <tr>
                         <th>Content</th>
-                        <th width="20%">Action</th>
+                        <th width="26%">Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -85,8 +86,11 @@
                         </td>
                         <td>
                             <input type="hidden" name="id" th:value="${task.id}"/>
+                            <input type="hidden" name="label" th:value="${task.label}" />
+                            <input type="hidden" name="content" th:value="${task.content}" />
                             <button class="btn btn-success doneButton" type="button" name="">Done!</button>
-                            <button type="button" class="btn btn-default">Later</button>
+                            <button type="button" class="btn btn-default" name="modifyButton">Modify</button>
+                            <button type="button" class="btn btn-default" name="laterButton">Later</button>
                         </td>
                     </tr>
                     </tbody>
@@ -102,8 +106,10 @@
                                 </button>
                                 <h4 class="modal-title">Add Todo</h4>
                             </div>
-                            <form class="form-inline" id="newTaskForm" action="/taskList/save" method="post">
+                            <form class="form-inline" id="newTaskForm" action="/taskList/saveUpdate" method="post">
                                 <div class="modal-body">
+                                    <input type="hidden" id="inlineFormInputId" />
+
                                     <select class="form-control" name="label" id="inlineFormCustomSelect">
                                         <option th:each="label : ${labels}" th:value="${label.getName()}"
                                                 th:text="${label.getValue()}"></option>
@@ -157,6 +163,7 @@
     $(function () {
         //绑定新增任务按钮
         $('#newTaskButton').on('click', function () {
+            $('#inlineFormInputId').val(0);
             $('#inlineFormInput').val('');
             $('#newTask').modal('toggle');
 
@@ -164,8 +171,12 @@
 
         //绑定保存按钮
         $('#SaveTask').on('click', function () {
+            var id = $('#inlineFormInputId').val();
             $('#newTask').modal('hide');
             $('#newTaskForm').ajaxSubmit({
+                data:{
+                  id : id
+                },
                 success: function (data) {
                     showData(data, '/taskList/list');
                 },
@@ -199,7 +210,18 @@
                     }
                 }
             );
-            console.log(id);
+        });
+
+        //绑定修改按钮
+        $('button[name="modifyButton"]').on('click', function() {
+            var taskId = $(this).siblings('input[name="id"]').val();
+            var label = $(this).siblings('input[name="label"]').val();
+            var content = $(this).siblings('input[name="content"]').val();
+            //设置值
+            $('#inlineFormCustomSelect').val(label);
+            $('#inlineFormInput').val(content);
+            $('#inlineFormInputId').val(taskId);
+            $('#newTask').modal('show');
         });
 
         function showData(data, url) {

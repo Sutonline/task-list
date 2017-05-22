@@ -11,6 +11,7 @@
         <result column="UPDATE_DATE" property="updateDate" jdbcType="DATE"/>
         <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
     </resultMap>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         DELETE FROM todo_list
         WHERE ID = #{id,jdbcType=INTEGER}
@@ -74,5 +75,6 @@
             REMARK
         FROM todo_list
         WHERE STATE = #{state}
+        ORDER BY CREATE_DATE ASC
     </select>
 </mapper>

@@ -4,6 +4,7 @@ import cn.kevin.domain.TaskList;
 import java.util.List;
 
 public interface TaskListMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(TaskList record);
