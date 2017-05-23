@@ -63,5 +63,14 @@
         <dispatcher>ERROR</dispatcher>
         <!--<dispatcher>ASYNC</dispatcher>&lt;!&ndash; Servlet 3.0 w/ disabled auto-initialization only; not supported in 2.5 &ndash;&gt;-->
     </filter-mapping>
+    <!-- 登录filter -->
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>cn.kevin.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/taskList/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

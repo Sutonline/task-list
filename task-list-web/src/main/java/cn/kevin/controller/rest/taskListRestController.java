@@ -2,15 +2,13 @@ package cn.kevin.controller.rest;
 
 import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.TaskList;
+import cn.kevin.domain.query.TaskListQuery;
 import cn.kevin.util.Constants;
 import com.google.common.base.Strings;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -110,7 +108,7 @@ public class taskListRestController {
      */
     private String updateTaskList(String label, String content,
                                  int id) {
-        String resultMsg = null;
+        String resultMsg;
         int updateCnt = 0;
         if (id != 0) {
             TaskList taskList = taskListMapper.selectByPrimaryKey(id);
@@ -121,5 +119,13 @@ public class taskListRestController {
         resultMsg = updateCnt == 1 ? "更新成功" : "更新失败";
         log.info("更新id为{}的taskList的返回信息是: {}", id, resultMsg);
         return resultMsg;
+    }
+
+    @PostMapping(value = "/query")
+    public List<TaskList> getByTaskListQuery(@ModelAttribute(value = "taskListQuery")TaskListQuery query) {
+        List<TaskList> list;
+        log.info("执行方法{}, 参数是: {}", "getByTaskListQuery", query.toString());
+        list = taskListMapper.selectByTaskListQuery(query);
+        return list;
     }
 }

@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Dashboard Template for Bootstrap</title>
+    <title>Task History</title>
 
     <!-- Bootstrap core CSS 两个的位置不能反 -->
     <link th:href="@{/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.css}" rel="stylesheet">
@@ -69,14 +69,25 @@
             </ul>
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2 class="sub-header">Completed Tasks...</h2>
+            <!-- Finished Task Start -->
+            <form class="form-inline" action="/taskList/historySearch" method="post" modelAttribute="taskListQuery">
+                <select class="form-control" name="label" id="inlineFormCustomSelect">
+                    <option th:each="label : ${labels}" th:value="${label.getName()}"
+                            th:text="${label.getValue()}"></option>
+                </select>
+                <input type="text" class="form-control " id="inlineFormInput"
+                       placeholder="Something to do" name="content" style="width: 79%">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+            <!-- Finished Task End -->
 
-            <h2 class="sub-header">Waiting Tasks...</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr>
                         <th>Content</th>
-                        <th width="26%">Action</th>
+                        <th width="26%">Update Time</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -84,51 +95,14 @@
                         <td th:text="${task.content}">
 
                         </td>
-                        <td>
-                            <input type="hidden" name="id" th:value="${task.id}"/>
-                            <input type="hidden" name="label" th:value="${task.label}" />
-                            <input type="hidden" name="content" th:value="${task.content}" />
-                            <button class="btn btn-success doneButton" type="button" name="">Done!</button>
-                            <button type="button" class="btn btn-default" name="modifyButton">Modify</button>
-                            <button type="button" class="btn btn-default" name="laterButton">Later</button>
+                        <td th:data="${task.updateDate}">
+
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div>
-                <!-- Modal HTML -->
-                <div id="newTask" class="modal fade">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title">Add Todo</h4>
-                            </div>
-                            <form class="form-inline" id="newTaskForm" action="/taskList/saveUpdate" method="post">
-                                <div class="modal-body">
-                                    <input type="hidden" id="inlineFormInputId" />
-
-                                    <select class="form-control" name="label" id="inlineFormCustomSelect">
-                                        <option th:each="label : ${labels}" th:value="${label.getName()}"
-                                                th:text="${label.getValue()}"></option>
-                                    </select>
-
-                                    <!--<label class="sr-only" for="inlineFormInput">Name</label>-->
-                                    <input type="text" class="form-control " id="inlineFormInput"
-                                           placeholder="Something to do" name="content" style="width: 79%">
-
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancle</button>
-                                    <button type="button" class="btn btn-primary" id="SaveTask">Save changes</button>
-                                </div>
-                                <!-- form end -->
-                            </form>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- tip modal -->
                 <div id="tipModal" class="modal fade">
@@ -174,8 +148,8 @@
             var id = $('#inlineFormInputId').val();
             $('#newTask').modal('hide');
             $('#newTaskForm').ajaxSubmit({
-                data:{
-                  id : id
+                data: {
+                    id: id
                 },
                 success: function (data) {
                     showData(data, '/taskList/list');
@@ -213,7 +187,7 @@
         });
 
         //绑定修改按钮
-        $('button[name="modifyButton"]').on('click', function() {
+        $('button[name="modifyButton"]').on('click', function () {
             var taskId = $(this).siblings('input[name="id"]').val();
             var label = $(this).siblings('input[name="label"]').val();
             var content = $(this).siblings('input[name="content"]').val();

@@ -34,7 +34,7 @@
             STATE         = #{state,jdbcType=VARCHAR},
             CREATE_DATE   = #{createDate,jdbcType=DATE},
             SCHEDULE_DATE = #{scheduleDate,jdbcType=DATE},
-            UPDATE_DATE   = #{updateDate,jdbcType=DATE},
+            UPDATE_DATE   = now(),
             REMARK        = #{remark,jdbcType=VARCHAR}
         WHERE ID = #{id,jdbcType=INTEGER}
     </update>
@@ -76,5 +76,28 @@
         FROM todo_list
         WHERE STATE = #{state}
         ORDER BY CREATE_DATE ASC
+    </select>
+    <select id="selectByTaskListQuery" resultMap="BaseResultMap" parameterType="cn.kevin.domain.query.TaskListQuery">
+        SELECT
+            ID,
+            LABEL,
+            CONTENT,
+            STATE,
+            CREATE_DATE,
+            SCHEDULE_DATE,
+            UPDATE_DATE,
+            REMARK
+        FROM todo_list
+        <where>
+            <if test="label != null">
+                label = #{label}
+            </if>
+            <if test="content != null">
+                AND content like #{content}
+            </if>
+            <if test="state != null">
+                AND state = #{state}
+            </if>
+        </where>
     </select>
 </mapper>

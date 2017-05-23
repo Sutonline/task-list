@@ -1,6 +1,8 @@
 package cn.kevin.dao;
 
 import cn.kevin.domain.TaskList;
+import cn.kevin.domain.query.TaskListQuery;
+
 import java.util.List;
 
 public interface TaskListMapper {
@@ -22,4 +24,10 @@ public interface TaskListMapper {
      */
     List<TaskList> selectByState(String state);
 
+    /**
+     * 根据query实体进行查询List<TaskList>
+     * @param taskListQuery
+     * @return
+     */
+    List<TaskList> selectByTaskListQuery(TaskListQuery taskListQuery);
 }
