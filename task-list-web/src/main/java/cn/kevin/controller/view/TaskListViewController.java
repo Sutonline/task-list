@@ -62,7 +62,13 @@ public class TaskListViewController {
     public ModelAndView historySearch(@ModelAttribute(value = "taskListQuery") TaskListQuery taskListQuery) {
         ModelAndView modelAndView = new ModelAndView();
         if (taskListQuery != null && taskListQuery.getOrderByClause() == null) {
-            taskListQuery.setOrderByClause("update_date desc");
+            if (taskListQuery.getOrderByClause() != null)
+                taskListQuery.setOrderByClause("update_date desc");
+            String content = taskListQuery.getContent();
+            if (content != null) {
+                taskListQuery.setContent("%".concat(content).concat("%"));
+            }
+            taskListQuery.setState("1"); //已完成
         }
         log.info("执行方法{}, 参数是: {}", "getByTaskListQuery", taskListQuery.toString());
         List<TaskList> list = taskListMapper.selectByTaskListQuery(taskListQuery);

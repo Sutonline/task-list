@@ -89,13 +89,13 @@
             REMARK
         FROM todo_list
         <where>
-            <if test="label != null">
+            <if test="label != null and label != ''">
                 label = #{label}
             </if>
-            <if test="content != null">
+            <if test="content != null and content != ''" >
                 AND content like #{content}
             </if>
-            <if test="state != null">
+            <if test="state != null and state != ''">
                 AND state = #{state}
             </if>
         </where>
