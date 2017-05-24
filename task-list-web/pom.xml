@@ -55,7 +55,7 @@
             <artifactId>velocity-tools</artifactId>
             <version>${velocity-tools.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
@@ -64,7 +64,7 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring4</artifactId>
             <version>${thymeleaf.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>cn.kevin</groupId>
             <artifactId>task-list-dao</artifactId>
@@ -79,6 +79,11 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>
             <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemark.version}</version>
         </dependency>
     </dependencies>
 

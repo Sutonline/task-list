@@ -30,7 +30,7 @@ public class LoginViewController {
 
     @GetMapping(value = "/index")
     public String index() {
-        return "login";
+        return "login/login";
     }
 
     @PostMapping(value = "/login")
@@ -40,7 +40,7 @@ public class LoginViewController {
             String message = "用户名或密码为空，不能登录";
             log.error(message);
             modelAndView.addObject(Constants.TIP_MESSAGE, message);
-            modelAndView.setViewName("login");
+            modelAndView.setViewName("login/login");
             return modelAndView;
         }
         // 根据username去获取，然后进行
@@ -50,7 +50,7 @@ public class LoginViewController {
             modelAndView.setViewName("redirect:/taskList/list");
         } else {
             modelAndView.addObject(Constants.TIP_MESSAGE, "用户名或密码错误");
-            modelAndView.setViewName("login");
+            modelAndView.setViewName("login/login");
         }
 
         return modelAndView;
@@ -62,6 +62,6 @@ public class LoginViewController {
         if (! Strings.isNullOrEmpty(attribute)) {
             session.removeAttribute(Constants.LOGIN_USER);
         }
-        return "login";
+        return "login/login";
     }
 }
