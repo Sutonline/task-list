@@ -40,7 +40,7 @@ public class TaskListViewController {
             return new ModelAndView("redirect:/login/index");
         }*/
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("task-list");
+        modelAndView.setViewName("taskList/list");
         modelAndView.addObject("tasks", taskListMapper.selectByState("0"));
         modelAndView.addObject("labels", taskLabelMapper.selectAll());
         return modelAndView;
