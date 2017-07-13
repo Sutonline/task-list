@@ -1,5 +1,7 @@
 package cn.kevin.controller.rest;
 
+import cn.kevin.dao.TaskLabelMapper;
+import cn.kevin.domain.TaskLabel;
 import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.TaskList;
@@ -26,7 +28,7 @@ public class taskListRestController {
     @Autowired
     private TaskListMapper taskListMapper;
 
-
+    private TaskLabelMapper labelMapper;
 
     @PostMapping("/done")
     public String done(@Param(value = "id") int id) {
@@ -137,5 +139,16 @@ public class taskListRestController {
         log.info("执行方法{}, 参数是: {}", "getByTaskListQuery", query.toString());
         list = taskListMapper.selectByTaskListQuery(query);
         return list;
+    }
+
+    @GetMapping("/getLabels")
+    public List<TaskLabel> getAllLabels() {
+        log.info("执行方法{}", "getAllLabels");
+        return labelMapper.selectAll();
+    }
+
+    @Autowired
+    public void setLabelMapper(TaskLabelMapper labelMapper) {
+        this.labelMapper = labelMapper;
     }
 }
