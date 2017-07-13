@@ -12,10 +12,10 @@
     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="location" value="classpath:/application-dev.properties" />
+        <property name="location" value="classpath:/application.properties" />
     </bean>
 
-    <context:component-scan base-package="cn.kevin.controller, cn.kevin.service"/>
+    <context:component-scan base-package="cn.kevin.controller, cn.kevin.service, cn.kevin.helper"/>
     <mvc:annotation-driven/>
 
     <import resource="spring-datasource-druid.xml" />

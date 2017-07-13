@@ -28,8 +28,12 @@
         </Logger>-->
         <Root level="info">
             <AppenderRef ref="${log.appender}"/>
+            <AppenderRef ref="console"/>
         </Root>
 
+        <!--<logger name="org.springframework" level="info">
+            <AppenderRef ref="console" />
+        </logger>-->
     </Loggers>
 
 </Configuration>

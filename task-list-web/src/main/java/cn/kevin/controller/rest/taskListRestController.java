@@ -1,5 +1,6 @@
 package cn.kevin.controller.rest;
 
+import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.TaskList;
 import cn.kevin.domain.query.TaskListQuery;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/taskList")
 @Slf4j
+@WrapperResponseBody
 public class taskListRestController {
 
     @Autowired
@@ -46,9 +48,17 @@ public class taskListRestController {
      * 查询未完成的任务
      * @return
      */
-    @GetMapping(value = "/selectNonFinish")
+    @RequestMapping(value = "/selectNonFinish")
+    @WrapperResponseBody
     public List<TaskList> selectNonFinish() {
         List<TaskList> taskLists = taskListMapper.selectByState("0");
+        if (taskLists == null || taskLists.isEmpty()) {
+            TaskList taskList = new TaskList();
+            taskList.setContent("xxxx");
+            taskList.setLabel("xxx");
+            taskLists.add(taskList);
+        }
+
         return taskLists;
     }
 

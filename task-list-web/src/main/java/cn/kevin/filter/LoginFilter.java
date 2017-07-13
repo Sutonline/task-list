@@ -25,7 +25,8 @@ public class LoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        log.info("lalalalalal");
+        /*HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         try {
             HttpSession session = request.getSession();
@@ -38,8 +39,8 @@ public class LoginFilter implements Filter {
             log.error("尚未登录的用户");
             servletRequest.setAttribute(Constants.TIP_MESSAGE, "请先登录!");
             response.sendRedirect("/login/index");
-        }
-
+        }*/
+        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override
