@@ -28,10 +28,11 @@ public class WrapperRestController implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
-        response.getHeaders().add("Access-Control-Allow-Origin", "*");
+        /*response.getHeaders().add("Access-Control-Allow-Origin", "*");
         response.getHeaders().add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.getHeaders().add("Access-Control-Max-Age", "3600");
-        response.getHeaders().add("Access-Control-Allow-Headers", "x-requested-with");
+        response.getHeaders().add("Access-Control-Allow-Headers", "x-requested-with, Authorization");
+        response.getHeaders().add("Access-Control-Allow-Credentials","true");*/
         return body;
     }
 }
