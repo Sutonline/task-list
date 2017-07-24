@@ -2,6 +2,8 @@ package cn.kevin.controller.rest;
 
 import cn.kevin.dao.TaskLabelMapper;
 import cn.kevin.domain.TaskLabel;
+import cn.kevin.domain.page.Page;
+import cn.kevin.domain.page.PageRequest;
 import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.TaskList;
@@ -23,7 +25,7 @@ import java.util.List;
 @RequestMapping("/taskList")
 @Slf4j
 @WrapperResponseBody
-public class taskListRestController {
+public class TaskListRestController {
 
     @Autowired
     private TaskListMapper taskListMapper;
@@ -146,6 +148,21 @@ public class taskListRestController {
         log.info("执行方法{}", "getAllLabels");
         return labelMapper.selectAll();
     }
+
+    /**
+     * TODO add implements
+     * @param query
+     * @param pageRequest
+     * @return
+     */
+    @GetMapping("/listByPage")
+    public Page<TaskList> listByPage(@ModelAttribute(value = "taskListQuery") TaskListQuery query,
+                                     @ModelAttribute(value = "page")PageRequest pageRequest) {
+        log.info("执行方法listByPage，参数是{}, 分页参数是{}", query.toString(), pageRequest.toString());
+
+        return null;
+    }
+
 
     @Autowired
     public void setLabelMapper(TaskLabelMapper labelMapper) {

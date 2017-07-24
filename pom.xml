@@ -17,6 +17,7 @@
     </modules>
 
     <properties>
+        <jackson.version>2.8.5</jackson.version>
         <spring.version>4.3.7.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
         <lombok.version>1.16.16</lombok.version>
@@ -121,6 +122,11 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 

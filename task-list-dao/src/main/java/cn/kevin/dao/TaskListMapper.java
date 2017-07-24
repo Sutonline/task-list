@@ -1,7 +1,9 @@
 package cn.kevin.dao;
 
 import cn.kevin.domain.TaskList;
+import cn.kevin.domain.page.PageRequest;
 import cn.kevin.domain.query.TaskListQuery;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -30,4 +32,12 @@ public interface TaskListMapper {
      * @return
      */
     List<TaskList> selectByTaskListQuery(TaskListQuery taskListQuery);
+
+    /**
+     * 分页请求数据
+     * @param query
+     * @param pageRequest
+     * @return
+     */
+    List<TaskList> listByPage(@Param(value = "query") TaskListQuery query, @Param(value = "page") PageRequest pageRequest);
 }

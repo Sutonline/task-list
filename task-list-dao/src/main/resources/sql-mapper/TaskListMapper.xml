@@ -100,4 +100,32 @@
             </if>
         </where>
     </select>
+
+    <select id="listByPage" resultMap="BaseResultMap">
+        SELECT
+            ID,
+            LABEL,
+            CONTENT,
+            STATE,
+            CREATE_DATE,
+            SCHEDULE_DATE,
+            UPDATE_DATE,
+            REMARK
+        FROM todo_list
+        <where>
+            <if test="query.label != null and query.label != ''">
+                label = #{query.label}
+            </if>
+            <if test="query.content != null and query.content != ''" >
+                AND content like #{query.content}
+            </if>
+            <if test="query.state != null and query.state != ''">
+                AND state = #{query.state}
+            </if>
+        </where>
+        ORDER BY CREATE_DATE DESC
+        <if test="page != null">
+            LIMIT #{page.offset}, #{page.pageSize}
+        </if>
+    </select>
 </mapper>
