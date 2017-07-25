@@ -10,6 +10,7 @@ import cn.kevin.domain.TaskList;
 import cn.kevin.domain.query.TaskListQuery;
 import cn.kevin.util.Constants;
 import com.google.common.base.Strings;
+import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,17 +151,24 @@ public class TaskListRestController {
     }
 
     /**
-     * TODO add implements
      * @param query
      * @param pageRequest
      * @return
      */
     @GetMapping("/listByPage")
-    public Page<TaskList> listByPage(@ModelAttribute(value = "taskListQuery") TaskListQuery query,
-                                     @ModelAttribute(value = "page")PageRequest pageRequest) {
+    public Page<TaskList> listByPage(TaskListQuery query,
+                                     PageRequest pageRequest) {
+        if (query == null || query.getState() == null) {
+            query = new TaskListQuery();
+            query.setState("1");
+        }
         log.info("执行方法listByPage，参数是{}, 分页参数是{}", query.toString(), pageRequest.toString());
-
-        return null;
+        Page<TaskList> page = new Page<>();
+        page.setList(taskListMapper.listByPage(query, pageRequest));
+        page.setPageIndex(pageRequest.getPageIndex());
+        page.setPageSize(pageRequest.getPageSize());
+        page.setTotalItems(taskListMapper.countByQuery(query));
+        return page;
     }
 
 

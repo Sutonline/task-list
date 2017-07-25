@@ -40,4 +40,6 @@ public interface TaskListMapper {
      * @return
      */
     List<TaskList> listByPage(@Param(value = "query") TaskListQuery query, @Param(value = "page") PageRequest pageRequest);
+
+    Integer countByQuery(TaskListQuery query);
 }

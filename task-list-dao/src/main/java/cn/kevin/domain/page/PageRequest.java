@@ -1,8 +1,11 @@
 package cn.kevin.domain.page;
 
+import lombok.NoArgsConstructor;
+
 /**
  * pageRequest 分页请求
  */
+@NoArgsConstructor
 public class PageRequest {
 
     /**
@@ -14,7 +17,6 @@ public class PageRequest {
      * 分页大小
      */
     private int pageSize;
-
 
     public PageRequest(int pageIndex, int pageSize) {
         this.pageIndex = pageIndex;

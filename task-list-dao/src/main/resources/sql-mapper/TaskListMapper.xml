@@ -123,9 +123,25 @@
                 AND state = #{query.state}
             </if>
         </where>
-        ORDER BY CREATE_DATE DESC
+        ORDER BY UPDATE_DATE DESC
         <if test="page != null">
             LIMIT #{page.offset}, #{page.pageSize}
         </if>
+    </select>
+    <select id="countByQuery" resultType="java.lang.Integer">
+        SELECT
+          COUNT(1)
+        FROM todo_list
+        <where>
+            <if test="label != null and label != ''">
+                label = #{label}
+            </if>
+            <if test="content != null and content != ''" >
+                AND content like #{content}
+            </if>
+            <if test="state != null and state != ''">
+                AND state = #{state}
+            </if>
+        </where>
     </select>
 </mapper>
