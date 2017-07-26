@@ -79,9 +79,9 @@ public class TaskListRestController {
 
 
 
-    @PostMapping(value = "saveUpdate")
-    public String saveOrUpdate(@Param(value = "id") int id, @Param(value = "label") String label,
-                               @Param(value = "content") String content) {
+    @PostMapping(value = "/saveUpdate")
+    public String saveOrUpdate(@RequestParam(value = "id") int id, @RequestParam(value = "label") String label,
+                               @RequestParam(value = "content") String content) {
         String resultMsg;
         if (id == 0) {
             resultMsg = save(label, content);

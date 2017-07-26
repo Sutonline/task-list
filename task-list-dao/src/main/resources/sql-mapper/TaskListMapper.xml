@@ -75,7 +75,7 @@
             REMARK
         FROM todo_list
         WHERE STATE = #{state}
-        ORDER BY CREATE_DATE ASC
+        ORDER BY CREATE_DATE DESC
     </select>
     <select id="selectByTaskListQuery" resultMap="BaseResultMap" parameterType="cn.kevin.domain.query.TaskListQuery">
         SELECT
