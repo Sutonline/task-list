@@ -7,7 +7,7 @@
     <!-- 该插件给实体类添加toString()方法  -->
 
     <!-- 导入属性配置 -->
-    <properties url="file:///D:/Desktop/Work/git/tasklist/task-list-web/src/main/resources/mybatis-generator/generator.properties"></properties>
+    <properties url="file:///D:/git/task-list/task-list-web/src/main/resources/mybatis-generator/generator.properties"></properties>
 
     <!-- 指定特定数据库的jdbc驱动jar包的位置 -->
     <classPathEntry location="${jdbc.classEntry}" />
@@ -56,7 +56,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="cn.kevin.dao" targetProject="D:/Desktop/Work/git/tasklist/task-list-dao/src/main/java">
         </javaClientGenerator>
 
-        <table tableName="todo_user" domainObjectName="User">
+        <table tableName="task_list_node" domainObjectName="ActivityNode">
             <!-- optional   , only for mybatis3 runtime
                  自动生成的键值（identity,或者序列值）
                如果指定此元素，MBG将会生成<selectKey>元素，然后将此元素插入到SQL Map的<insert> 元素之中

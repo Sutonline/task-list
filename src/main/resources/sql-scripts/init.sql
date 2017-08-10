@@ -68,7 +68,6 @@ PRIMARY KEY (`id`)
 ENGINE=InnoDB
 DEFAULT CHARACTER SET=utf8 COLLATE=utf8_general_ci
 AUTO_INCREMENT=2
-
 ;
 
 -- ----------------------------
@@ -92,3 +91,41 @@ ALTER TABLE `todo_list` AUTO_INCREMENT=1;
 -- Auto increment value for todo_user
 -- ----------------------------
 ALTER TABLE `todo_user` AUTO_INCREMENT=2;
+
+
+-- ----------------------------
+-- Table structure for task_list_activity
+-- ----------------------------
+DROP TABLE IF EXISTS `task_list_activity`;
+CREATE TABLE `task_list_activity` (
+  `activity_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '活动id',
+  `activity_name` varchar(500) DEFAULT NULL COMMENT '活动名称',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`activity_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for task_list_node
+-- ----------------------------
+DROP TABLE IF EXISTS `task_list_node`;
+CREATE TABLE `task_list_node` (
+  `node_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '节点id',
+  `activity_id` int(11) DEFAULT NULL COMMENT '活动id',
+  `type` int(11) DEFAULT NULL COMMENT '类型',
+  `pre_node_id` int(11) DEFAULT NULL COMMENT '上个node_id',
+  `next_node_id` int(11) DEFAULT NULL COMMENT '下个node_id',
+  `content` varchar(500) DEFAULT NULL COMMENT '内容',
+  `status` int(11) DEFAULT NULL COMMENT '状态',
+  `remark` varchar(200) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `due_time` datetime DEFAULT NULL COMMENT '过期时间',
+  `warn_cnt` int(11) DEFAULT NULL COMMENT '提醒次数',
+  PRIMARY KEY (`node_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+

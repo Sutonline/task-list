@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kevin.dao.ActivityNodeMapper">
+
+    <resultMap id="BaseResultMap" type="cn.kevin.domain.ActivityNode">
+        <id column="node_id" property="nodeId" jdbcType="INTEGER"/>
+        <result column="activity_id" property="activityId" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="pre_node_id" property="preNodeId" jdbcType="INTEGER"/>
+        <result column="next_node_id" property="nextNodeId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="due_time" property="dueTime" jdbcType="TIMESTAMP"/>
+        <result column="warn_cnt" property="warnCnt" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="baseColumns">
+        node_id, activity_id, type, pre_node_id, next_node_id, content, status,
+        remark, create_time, update_time, due_time, warn_cnt
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        DELETE FROM task_list_node
+        WHERE node_id = #{nodeId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="cn.kevin.domain.ActivityNode">
+        INSERT INTO task_list_node (node_id, activity_id, type,
+                                    pre_node_id, next_node_id, content,
+                                    status, remark, create_time,
+                                    update_time, due_time, warn_cnt
+        )
+        VALUES (#{nodeId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
+                                            #{preNodeId,jdbcType=INTEGER}, #{nextNodeId,jdbcType=INTEGER},
+                                            #{content,jdbcType=VARCHAR},
+                                            #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
+                                            #{createTime,jdbcType=TIMESTAMP},
+                                            #{updateTime,jdbcType=TIMESTAMP}, #{dueTime,jdbcType=TIMESTAMP},
+                #{warnCnt,jdbcType=INTEGER}
+        )
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.ActivityNode">
+        UPDATE task_list_node
+        SET activity_id  = #{activityId,jdbcType=INTEGER},
+            type         = #{type,jdbcType=INTEGER},
+            pre_node_id  = #{preNodeId,jdbcType=INTEGER},
+            next_node_id = #{nextNodeId,jdbcType=INTEGER},
+            content      = #{content,jdbcType=VARCHAR},
+            status       = #{status,jdbcType=INTEGER},
+            remark       = #{remark,jdbcType=VARCHAR},
+            create_time  = #{createTime,jdbcType=TIMESTAMP},
+            update_time  = #{updateTime,jdbcType=TIMESTAMP},
+            due_time     = #{dueTime,jdbcType=TIMESTAMP},
+            warn_cnt     = #{warnCnt,jdbcType=INTEGER}
+        WHERE node_id = #{nodeId,jdbcType=INTEGER}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            <include refid="baseColumns" />
+        FROM task_list_node
+        WHERE node_id = #{nodeId,jdbcType=INTEGER}
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+            <include refid="baseColumns" />
+        FROM task_list_node
+    </select>
+</mapper>
