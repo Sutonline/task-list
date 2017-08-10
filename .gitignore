@@ -6,3 +6,5 @@
 .idea/
 .log
 target/
+application.properties
+mybatis-generator/
