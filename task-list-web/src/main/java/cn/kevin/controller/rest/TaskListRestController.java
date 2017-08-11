@@ -1,16 +1,20 @@
 package cn.kevin.controller.rest;
 
+import cn.kevin.dao.ActivityNodeMapper;
 import cn.kevin.dao.TaskLabelMapper;
+import cn.kevin.domain.Activity;
+import cn.kevin.domain.ActivityNode;
 import cn.kevin.domain.TaskLabel;
 import cn.kevin.domain.page.Page;
 import cn.kevin.domain.page.PageRequest;
+import cn.kevin.domain.query.ActivityQuery;
 import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.TaskList;
 import cn.kevin.domain.query.TaskListQuery;
+import cn.kevin.service.ActivityService;
 import cn.kevin.util.Constants;
 import com.google.common.base.Strings;
-import javafx.concurrent.Task;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * task list controller
  * Created by yongkang.zhang on 2017/5/18.
  */
 @RestController
@@ -28,10 +33,17 @@ import java.util.List;
 @WrapperResponseBody
 public class TaskListRestController {
 
-    @Autowired
-    private TaskListMapper taskListMapper;
-
+    private final TaskListMapper taskListMapper;
     private TaskLabelMapper labelMapper;
+    private ActivityService activityService;
+    private ActivityNodeMapper activityNodeMapper;
+
+    @Autowired
+    public TaskListRestController(TaskListMapper taskListMapper, ActivityService activityService, ActivityNodeMapper activityNodeMapper) {
+        this.taskListMapper = taskListMapper;
+        this.activityService = activityService;
+        this.activityNodeMapper = activityNodeMapper;
+    }
 
     @PostMapping("/done")
     public String done(@Param(value = "id") int id) {
@@ -44,14 +56,15 @@ public class TaskListRestController {
             taskList.setState("1");
             taskListMapper.updateByPrimaryKey(taskList);
         } catch (Exception e) {
-
+            log.error("{}任务完成错误", id, e);
+            return "完成错误!";
         }
         return Constants.SUCCESS;
     }
 
     /**
      * 查询未完成的任务
-     * @return
+     * @return task list
      */
     @RequestMapping(value = "/selectNonFinish")
     @WrapperResponseBody
@@ -61,6 +74,7 @@ public class TaskListRestController {
             TaskList taskList = new TaskList();
             taskList.setContent("xxxx");
             taskList.setLabel("xxx");
+            assert taskLists != null;
             taskLists.add(taskList);
         }
 
@@ -69,12 +83,11 @@ public class TaskListRestController {
 
     /**
      * 查询已完成的任务
-     * @return
+     * @return 任务列表
      */
     @GetMapping(value = "/selectFinished")
     public List<TaskList> selectFinished() {
-        List<TaskList> taskLists = taskListMapper.selectByState("1");
-        return taskLists;
+        return taskListMapper.selectByState("1");
     }
 
 
@@ -94,9 +107,9 @@ public class TaskListRestController {
 
     /**
      * 从saveUpdate接收然后delegate到这个方法
-     * @param label
-     * @param content
-     * @return
+     * @param label 标签
+     * @param content 内容
+     * @return 更新结果
      */
     private String save(String label, String content) {
         try {
@@ -119,7 +132,7 @@ public class TaskListRestController {
 
     /**
      * 更新
-     * @return
+     * @return 更新结果
      */
     private String updateTaskList(String label, String content,
                                  int id) {
@@ -151,9 +164,9 @@ public class TaskListRestController {
     }
 
     /**
-     * @param query
-     * @param pageRequest
-     * @return
+     * @param query 查询
+     * @param pageRequest 分页信息
+     * @return 返回结果
      */
     @GetMapping("/listByPage")
     public Page<TaskList> listByPage(TaskListQuery query,
@@ -171,9 +184,54 @@ public class TaskListRestController {
         return page;
     }
 
+    @GetMapping("/listActivities")
+    public List<Activity> listActivities(ActivityQuery query) {
+        return activityService.listByQuery(query);
+    }
+
+    @PutMapping(value = "/saveActivity")
+    public String saveActivity(Activity activity) {
+        int cnt = activityService.insert(activity);
+        if (cnt == 1) {
+            return "保存成功!";
+        } else {
+            return "保存失败!";
+        }
+    }
+
+    @PutMapping(value = "/saveNode")
+    public String saveActivityNode(ActivityNode activityNode) {
+        int cnt = activityNodeMapper.insert(activityNode);
+        if (cnt == 1) {
+            return "保存成功!";
+        } else {
+            return "保存失败!";
+        }
+    }
+
+    @PutMapping(value = "/updateActivity")
+    public String updateActivity(Activity activity) {
+        int cnt = activityService.update(activity);
+        if (cnt == 1) {
+            return "更新成功!";
+        } else {
+            return "更新失败!";
+        }
+    }
+
+    @PutMapping(value = "/updateActivityNode")
+    public String updateActivityNode(ActivityNode activityNode) {
+        int cnt = activityNodeMapper.updateByPrimaryKey(activityNode);
+        if (cnt == 1) {
+            return "更新成功!";
+        } else {
+            return "更新失败!";
+        }
+    }
 
     @Autowired
     public void setLabelMapper(TaskLabelMapper labelMapper) {
         this.labelMapper = labelMapper;
     }
+
 }

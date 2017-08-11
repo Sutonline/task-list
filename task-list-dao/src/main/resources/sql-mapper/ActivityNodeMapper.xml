@@ -6,8 +6,7 @@
         <id column="node_id" property="nodeId" jdbcType="INTEGER"/>
         <result column="activity_id" property="activityId" jdbcType="INTEGER"/>
         <result column="type" property="type" jdbcType="INTEGER"/>
-        <result column="pre_node_id" property="preNodeId" jdbcType="INTEGER"/>
-        <result column="next_node_id" property="nextNodeId" jdbcType="INTEGER"/>
+        <result column="sort_no" property="sortNo" jdbcType="FLOAT"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
@@ -18,8 +17,54 @@
     </resultMap>
 
     <sql id="baseColumns">
-        node_id, activity_id, type, pre_node_id, next_node_id, content, status,
+        node_id, activity_id, type, sort_no, content, status,
         remark, create_time, update_time, due_time, warn_cnt
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="activityId != null">
+                activity_id = #{activityId}
+            </if>
+            <if test="warnCnt != null">
+                AND warnCnt = #{warnCnt}
+            </if>
+            <if test="dueTime != null">
+                AND dueTime >= #{dueTime}
+            </if>
+            <if test="content != null">
+                AND content like #{content}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="updateClause">
+        <set>
+            <if test="sortNo != null">
+                sort_no = #{sortNo},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="dueTime != null">
+                due_time = #{dueTime},
+            </if>
+            <if test="warnCnt != null">
+                warn_cnt = #{warnCnt}
+            </if>
+        </set>
     </sql>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -28,12 +73,11 @@
     </delete>
     <insert id="insert" parameterType="cn.kevin.domain.ActivityNode">
         INSERT INTO task_list_node (node_id, activity_id, type,
-                                    pre_node_id, next_node_id, content,
+                                    sort_no, content,
                                     status, remark, create_time,
                                     update_time, due_time, warn_cnt
         )
-        VALUES (#{nodeId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER},
-                                            #{preNodeId,jdbcType=INTEGER}, #{nextNodeId,jdbcType=INTEGER},
+        VALUES (#{nodeId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sortNo},
                                             #{content,jdbcType=VARCHAR},
                                             #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
                                             #{createTime,jdbcType=TIMESTAMP},
@@ -43,28 +87,29 @@
     </insert>
     <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.ActivityNode">
         UPDATE task_list_node
-        SET activity_id  = #{activityId,jdbcType=INTEGER},
-            type         = #{type,jdbcType=INTEGER},
-            pre_node_id  = #{preNodeId,jdbcType=INTEGER},
-            next_node_id = #{nextNodeId,jdbcType=INTEGER},
-            content      = #{content,jdbcType=VARCHAR},
-            status       = #{status,jdbcType=INTEGER},
-            remark       = #{remark,jdbcType=VARCHAR},
-            create_time  = #{createTime,jdbcType=TIMESTAMP},
-            update_time  = #{updateTime,jdbcType=TIMESTAMP},
-            due_time     = #{dueTime,jdbcType=TIMESTAMP},
-            warn_cnt     = #{warnCnt,jdbcType=INTEGER}
+        <include refid="updateClause" />
         WHERE node_id = #{nodeId,jdbcType=INTEGER}
     </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         SELECT
-            <include refid="baseColumns" />
+        <include refid="baseColumns"/>
         FROM task_list_node
         WHERE node_id = #{nodeId,jdbcType=INTEGER}
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
-            <include refid="baseColumns" />
+        <include refid="baseColumns"/>
         FROM task_list_node
     </select>
+
+    <select id="listByQuery" parameterType="cn.kevin.domain.query.ActivityNodeQuery" resultMap="BaseResultMap">
+        SELECT
+            <include refid="baseColumns" />
+        FROM task_list_node
+        <include refid="condition" />
+        <if test="orderBy != null" >
+            ORDER BY ${orderBy}
+        </if>
+    </select>
+
 </mapper>

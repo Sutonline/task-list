@@ -12,7 +12,32 @@
     </resultMap>
 
     <sql id="baseColumns">
-        activity_id, activity_name, status, create_time, update_time, reamrk
+        activity_id, activity_name, status, create_time, update_time, remark
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="activityName != null">
+                ACTIVITY_NAME = #{activityName}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="updateClause">
+        <set>
+            <if test="activityName != null">
+                ACTIVITY_NAME = #{activityName},
+            </if>
+            <if test="status != null">
+                STATUS = #{status},
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+        </set>
     </sql>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
@@ -31,11 +56,7 @@
 
     <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.Activity">
         UPDATE task_list_activity
-        SET activity_name = #{activityName,jdbcType=VARCHAR},
-            status        = #{status,jdbcType=INTEGER},
-            create_time   = #{createTime,jdbcType=TIMESTAMP},
-            update_time   = #{updateTime,jdbcType=TIMESTAMP},
-            remark        = #{remark,jdbcType=VARCHAR}
+        <include refid="updateClause" />
         WHERE activity_id = #{activityId,jdbcType=INTEGER}
     </update>
 
@@ -50,5 +71,12 @@
         SELECT
             <include refid="baseColumns" />
         FROM task_list_activity
+    </select>
+
+    <select id="listByQuery" resultMap="BaseResultMap" parameterType="cn.kevin.domain.query.ActivityQuery">
+        SELECT
+            <include refid="baseColumns" />
+        FROM task_list_activity
+        <include refid="condition" />
     </select>
 </mapper>

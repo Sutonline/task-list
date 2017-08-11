@@ -23,9 +23,7 @@ public class ActivityNode {
      */
     private Integer type;
 
-    private Integer preNodeId;
-
-    private Integer nextNodeId;
+    private Float sortNo;
 
     private String content;
 

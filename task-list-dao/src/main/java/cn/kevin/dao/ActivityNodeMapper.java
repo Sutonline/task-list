@@ -1,6 +1,8 @@
 package cn.kevin.dao;
 
 import cn.kevin.domain.ActivityNode;
+import cn.kevin.domain.query.ActivityNodeQuery;
+
 import java.util.List;
 
 public interface ActivityNodeMapper {
@@ -13,4 +15,6 @@ public interface ActivityNodeMapper {
     List<ActivityNode> selectAll();
 
     int updateByPrimaryKey(ActivityNode record);
+
+    List<ActivityNode> listByQuery(ActivityNodeQuery query);
 }
