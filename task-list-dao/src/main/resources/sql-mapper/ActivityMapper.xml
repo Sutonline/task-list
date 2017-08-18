@@ -23,6 +23,9 @@
             <if test="status != null">
                 AND STATUS = #{status}
             </if>
+            <if test="activityId != null">
+                AND ACTIVITY_ID = #{activityId}
+            </if>
         </where>
     </sql>
 

@@ -2,24 +2,29 @@ package cn.kevin.controller.rest;
 
 import cn.kevin.dao.ActivityNodeMapper;
 import cn.kevin.dao.TaskLabelMapper;
+import cn.kevin.dao.TaskListMapper;
 import cn.kevin.domain.Activity;
 import cn.kevin.domain.ActivityNode;
 import cn.kevin.domain.TaskLabel;
+import cn.kevin.domain.TaskList;
 import cn.kevin.domain.page.Page;
 import cn.kevin.domain.page.PageRequest;
 import cn.kevin.domain.query.ActivityQuery;
-import cn.kevin.helper.WrapperResponseBody;
-import cn.kevin.dao.TaskListMapper;
-import cn.kevin.domain.TaskList;
 import cn.kevin.domain.query.TaskListQuery;
+import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.service.ActivityService;
 import cn.kevin.util.Constants;
+import cn.kevin.util.ValidationUtil;
 import com.google.common.base.Strings;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -46,6 +51,8 @@ public class TaskListRestController {
     }
 
     @PostMapping("/done")
+    @ApiOperation(value = "完成任务")
+    @ApiImplicitParam(name = "id", value = "任务id")
     public String done(@Param(value = "id") int id) {
         try {
             TaskList taskList = taskListMapper.selectByPrimaryKey(id);
@@ -189,8 +196,18 @@ public class TaskListRestController {
         return activityService.listByQuery(query);
     }
 
-    @PutMapping(value = "/saveActivity")
-    public String saveActivity(Activity activity) {
+    @GetMapping(value = "/getActivityAndNodes")
+    public Activity getActivityAndNodes(Integer activityId) {
+        return activityService.getActivityAndNoes(activityId);
+    }
+
+    @PutMapping(value = "/saveActivity", headers = "Accept=application/json")
+    public String saveActivity(@RequestBody Activity activity, HttpServletRequest request) {
+        String validate = ValidationUtil.validate(activity);
+        if (validate != null) {
+            return validate;
+        }
+        activityService.addCreateInformation(activity);
         int cnt = activityService.insert(activity);
         if (cnt == 1) {
             return "保存成功!";

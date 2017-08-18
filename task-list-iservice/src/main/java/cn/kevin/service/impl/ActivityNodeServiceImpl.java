@@ -40,6 +40,6 @@ public class ActivityNodeServiceImpl implements ActivityNodeService {
 
     @Override
     public List<ActivityNode> listByQuery(ActivityNodeQuery activityNodeQuery) {
-        return activityNodeMapper.listByQuery(activityNodeQuery);
+        return activityNodeMapper.listByQuery(activityNodeQuery, null);
     }
 }

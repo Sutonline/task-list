@@ -12,6 +12,7 @@
     <properties>
         <mariadb.javaclient.version>2.0.3</mariadb.javaclient.version>
         <spring.security.version>4.2.2.RELEASE</spring.security.version>
+        <springfox.swagger.version>2.7.0</springfox.swagger.version>
     </properties>
 
     <artifactId>task-list-web</artifactId>
@@ -79,6 +80,16 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>${mariadb.javaclient.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox.swagger.version}</version>
         </dependency>
     </dependencies>
 

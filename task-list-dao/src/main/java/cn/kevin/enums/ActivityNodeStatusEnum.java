@@ -1,5 +1,7 @@
 package cn.kevin.enums;
 
+import java.util.Objects;
+
 /**
  * node节点执行状态枚举
  * Created by yongkang.zhang on 2017/8/10.
@@ -17,4 +19,12 @@ public enum ActivityNodeStatusEnum {
         return code;
     }
 
+
+    public static ActivityNodeStatusEnum fromStringCode(Integer code) {
+        if (code == null) return null;
+        for (ActivityNodeStatusEnum nodeStatusEnum : ActivityNodeStatusEnum.values()) {
+            if (Objects.equals(nodeStatusEnum.getCode(), code))  return nodeStatusEnum;
+        }
+        return null;
+    }
 }

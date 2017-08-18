@@ -14,29 +14,33 @@
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="due_time" property="dueTime" jdbcType="TIMESTAMP"/>
         <result column="warn_cnt" property="warnCnt" jdbcType="INTEGER"/>
+        <result column="need_days" property="needDays" jdbcType="INTEGER" />
     </resultMap>
 
     <sql id="baseColumns">
         node_id, activity_id, type, sort_no, content, status,
-        remark, create_time, update_time, due_time, warn_cnt
+        remark, create_time, update_time, due_time, warn_cnt, need_days
     </sql>
 
     <sql id="condition">
         <where>
-            <if test="activityId != null">
-                activity_id = #{activityId}
+            <if test="query.activityId != null">
+                ACTIVITY_ID = #{query.activityId}
             </if>
-            <if test="warnCnt != null">
-                AND warnCnt = #{warnCnt}
+            <if test="query.warnCnt != null">
+                AND WARN_CNT = #{query.warnCnt}
             </if>
-            <if test="dueTime != null">
-                AND dueTime >= #{dueTime}
+            <if test="query.dueTime != null">
+                AND DUE_TIME >= #{query.dueTime}
             </if>
-            <if test="content != null">
-                AND content like #{content}
+            <if test="query.content != null">
+                AND CONTENT like #{query.content}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="query.status != null">
+                AND STATUS = #{query.status}
+            </if>
+            <if test="query.sortNo != null">
+                AND SORT_NO > #{query.sortNo}
             </if>
         </where>
     </sql>
@@ -64,6 +68,9 @@
             <if test="warnCnt != null">
                 warn_cnt = #{warnCnt}
             </if>
+            <if test="needDays != null">
+                need_days = #{needDays}
+            </if>
         </set>
     </sql>
 
@@ -75,14 +82,14 @@
         INSERT INTO task_list_node (node_id, activity_id, type,
                                     sort_no, content,
                                     status, remark, create_time,
-                                    update_time, due_time, warn_cnt
+                                    update_time, due_time, warn_cnt, need_days
         )
         VALUES (#{nodeId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{sortNo},
                                             #{content,jdbcType=VARCHAR},
                                             #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR},
                                             #{createTime,jdbcType=TIMESTAMP},
                                             #{updateTime,jdbcType=TIMESTAMP}, #{dueTime,jdbcType=TIMESTAMP},
-                #{warnCnt,jdbcType=INTEGER}
+                #{warnCnt,jdbcType=INTEGER}, #{needDays}
         )
     </insert>
     <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.ActivityNode">
@@ -107,9 +114,17 @@
             <include refid="baseColumns" />
         FROM task_list_node
         <include refid="condition" />
-        <if test="orderBy != null" >
-            ORDER BY ${orderBy}
+        <if test="query.orderBy != null" >
+            ORDER BY ${query.orderBy}
+        </if>
+        <if test="page != null">
+            LIMIT #{page.offset}, #{page.pageSize}
         </if>
     </select>
 
+    <update id="completedNode" parameterType="Integer">
+        UPDATE task_list_node
+        SET STATUS = 2
+        WHERE node_id = #{nodeId}
+    </update>
 </mapper>

@@ -8,8 +8,11 @@ import lombok.Data;
  */
 @Data
 public class ActivityQuery {
+    
+    private Integer activityId;
 
     private String activityName;
 
     private Integer status;
+
 }

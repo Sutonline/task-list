@@ -45,4 +45,17 @@ public interface ActivityService {
      * @return activity的列表
      */
     List<Activity> listByQuery(ActivityQuery activityQuery);
+
+    /**
+     * 1. 更新当前任务为完成
+     * 2. 将下一个节点更新成执行中的状态或activity为结束的状态
+     * @param nodeId 节点id
+     */
+    void completeActivityNode(Integer nodeId);
+
+    /**
+     * 创建实体好多都缺少，需要补充信息
+     * @param activity
+     */
+    void addCreateInformation(Activity activity);
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * ActivityNodeQuery
  * Created by yongkang.zhang on 2017/8/11.
  */
 @Data
@@ -19,6 +20,8 @@ public class ActivityNodeQuery {
     private String content;
 
     private Integer status;
+
+    private Float sortNo;
 
     private String orderBy;
 }
