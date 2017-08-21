@@ -121,7 +121,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void completeActivityNode(Integer nodeId) {
         // 1. 完成当前任务
         activityNodeMapper.completedNode(nodeId);
@@ -132,7 +132,7 @@ public class ActivityServiceImpl implements ActivityService {
         ActivityNodeQuery activityNodeQuery = new ActivityNodeQuery();
         activityNodeQuery.setActivityId(activityId);
         activityNodeQuery.setSortNo(udpNode.getSortNo());
-        activityNodeQuery.setOrderBy(" sortNo asc");
+        activityNodeQuery.setOrderBy(" sort_no asc");
         PageRequest pageRequest = new PageRequest();
         pageRequest.setPageIndex(1);
         pageRequest.setPageSize(1);
@@ -144,6 +144,7 @@ public class ActivityServiceImpl implements ActivityService {
         } else { //否则启用下一个任务为进行中
             ActivityNode activityNode = activityNodes.get(0);
             activityNode.setStatus(ActivityNodeStatusEnum.RUNNING.getCode());
+            activityNode.setDueTime(new LocalDate(new Date()).plusDays(activityNode.getNeedDays()).toDate());
             activityNodeMapper.updateByPrimaryKey(activityNode);
         }
 

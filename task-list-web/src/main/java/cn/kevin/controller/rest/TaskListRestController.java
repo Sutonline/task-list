@@ -17,15 +17,11 @@ import cn.kevin.util.Constants;
 import cn.kevin.util.ValidationUtil;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -52,8 +48,6 @@ public class TaskListRestController {
     }
 
     @PostMapping("/done")
-    @ApiOperation(value = "完成任务")
-    @ApiImplicitParam(name = "id", value = "任务id")
     public String done(@Param(value = "id") int id) {
         try {
             TaskList taskList = taskListMapper.selectByPrimaryKey(id);

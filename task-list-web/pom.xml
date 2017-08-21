@@ -14,6 +14,7 @@
         <spring.security.version>4.2.2.RELEASE</spring.security.version>
         <springfox.swagger.version>2.7.0</springfox.swagger.version>
         <fastJson.version>1.2.37</fastJson.version>
+        <tomcat.version>8.5.20</tomcat.version>
     </properties>
 
     <artifactId>task-list-web</artifactId>
@@ -82,7 +83,7 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>${mariadb.javaclient.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox.swagger.version}</version>
@@ -91,11 +92,16 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox.swagger.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>${fastJson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
         </dependency>
     </dependencies>
 
