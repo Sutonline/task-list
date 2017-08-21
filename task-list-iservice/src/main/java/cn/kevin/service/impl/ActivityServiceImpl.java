@@ -13,6 +13,8 @@ import cn.kevin.service.ActivityService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -36,8 +38,17 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED)
     public int insert(Activity activity) {
-        return activityMapper.insert(activity);
+        int cnt = activityMapper.insert(activity);
+        List<ActivityNode> activityNodeList = activity.getActivityNodeList();
+        if (activityNodeList != null && ! activityNodeList.isEmpty()) {
+            activityNodeList.forEach(node -> {
+                node.setActivityId(activity.getActivityId());
+                activityNodeMapper.insert(node);
+            });
+        }
+        return cnt;
     }
 
     @Override
@@ -110,6 +121,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional
     public void completeActivityNode(Integer nodeId) {
         // 1. 完成当前任务
         activityNodeMapper.completedNode(nodeId);
@@ -143,7 +155,7 @@ public class ActivityServiceImpl implements ActivityService {
         activity.setCreateTime(new Date());
         activity.setStatus(ActivityStatusEnum.EXECUTING.getCode());
         List<ActivityNode> activityNodeList = activity.getActivityNodeList();
-        for (int i = 0; i < activityNodeList.size() - 1; i++) {
+        for (int i = 0; i < activityNodeList.size(); i++) {
             ActivityNode node = activityNodeList.get(i);
             if (i == 0) {
                 node.setStatus(ActivityNodeStatusEnum.RUNNING.getCode());
@@ -157,5 +169,12 @@ public class ActivityServiceImpl implements ActivityService {
             node.setSortNo((float) i);
             node.setWarnCnt(0);
         }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteActivityAndNode(Integer activityId) {
+        activityMapper.deleteByPrimaryKey(activityId);
+        activityNodeMapper.deleteByActivityId(activityId);
     }
 }

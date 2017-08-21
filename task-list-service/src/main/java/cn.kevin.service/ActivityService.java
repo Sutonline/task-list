@@ -58,4 +58,10 @@ public interface ActivityService {
      * @param activity
      */
     void addCreateInformation(Activity activity);
+
+    /**
+     * 删除活动
+     * @param activityId 活动id
+     */
+    void deleteActivityAndNode(Integer activityId);
 }

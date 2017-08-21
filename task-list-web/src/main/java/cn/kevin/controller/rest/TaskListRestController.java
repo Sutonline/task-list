@@ -15,6 +15,7 @@ import cn.kevin.helper.WrapperResponseBody;
 import cn.kevin.service.ActivityService;
 import cn.kevin.util.Constants;
 import cn.kevin.util.ValidationUtil;
+import com.alibaba.fastjson.JSON;
 import com.google.common.base.Strings;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -57,14 +58,14 @@ public class TaskListRestController {
         try {
             TaskList taskList = taskListMapper.selectByPrimaryKey(id);
             if (taskList == null) {
-                return "此任务不存在!";
+                return "此任务不存在";
             }
             taskList.setUpdateDate(new Date());
             taskList.setState("1");
             taskListMapper.updateByPrimaryKey(taskList);
         } catch (Exception e) {
             log.error("{}任务完成错误", id, e);
-            return "完成错误!";
+            return "完成错误";
         }
         return Constants.SUCCESS;
     }
@@ -74,7 +75,6 @@ public class TaskListRestController {
      * @return task list
      */
     @RequestMapping(value = "/selectNonFinish")
-    @WrapperResponseBody
     public List<TaskList> selectNonFinish() {
         List<TaskList> taskLists = taskListMapper.selectByState("0");
         if (taskLists == null || taskLists.isEmpty()) {
@@ -121,8 +121,8 @@ public class TaskListRestController {
     private String save(String label, String content) {
         try {
             if (Strings.isNullOrEmpty(content) || Strings.isNullOrEmpty(label)) {
-                log.error("参数不合法!");
-                return "参数不合法!";
+                log.error("参数不合法");
+                return "参数不合法";
             }
             TaskList taskList = new TaskList();
             taskList.setLabel(label);
@@ -201,8 +201,9 @@ public class TaskListRestController {
         return activityService.getActivityAndNoes(activityId);
     }
 
-    @PutMapping(value = "/saveActivity", headers = "Accept=application/json")
-    public String saveActivity(@RequestBody Activity activity, HttpServletRequest request) {
+    @RequestMapping(value = "/saveActivity", method = RequestMethod.POST)
+    public String saveActivity(String activityJson) {
+        Activity activity = JSON.parseObject(activityJson, Activity.class);
         String validate = ValidationUtil.validate(activity);
         if (validate != null) {
             return validate;
@@ -210,9 +211,9 @@ public class TaskListRestController {
         activityService.addCreateInformation(activity);
         int cnt = activityService.insert(activity);
         if (cnt == 1) {
-            return "保存成功!";
+            return "保存成功";
         } else {
-            return "保存失败!";
+            return "保存失败";
         }
     }
 
@@ -220,19 +221,31 @@ public class TaskListRestController {
     public String saveActivityNode(ActivityNode activityNode) {
         int cnt = activityNodeMapper.insert(activityNode);
         if (cnt == 1) {
-            return "保存成功!";
+            return "保存成功";
         } else {
-            return "保存失败!";
+            return "保存失败";
         }
+    }
+
+    @DeleteMapping(value = "/deleteActivity/{activityId}")
+    public String deleteActivity(@PathVariable Integer activityId) {
+        activityService.deleteActivityAndNode(activityId);
+        return "删除成功";
+    }
+
+    @PutMapping(value = "/completeNode/{nodeId}")
+    public String completeNode(@PathVariable Integer nodeId) {
+        activityService.completeActivityNode(nodeId);
+        return "完成成功";
     }
 
     @PutMapping(value = "/updateActivity")
     public String updateActivity(Activity activity) {
         int cnt = activityService.update(activity);
         if (cnt == 1) {
-            return "更新成功!";
+            return "更新成功";
         } else {
-            return "更新失败!";
+            return "更新失败";
         }
     }
 
@@ -240,9 +253,9 @@ public class TaskListRestController {
     public String updateActivityNode(ActivityNode activityNode) {
         int cnt = activityNodeMapper.updateByPrimaryKey(activityNode);
         if (cnt == 1) {
-            return "更新成功!";
+            return "更新成功";
         } else {
-            return "更新失败!";
+            return "更新失败";
         }
     }
 

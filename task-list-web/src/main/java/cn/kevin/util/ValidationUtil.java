@@ -18,14 +18,14 @@ public class ValidationUtil {
         StringBuilder sb = new StringBuilder();
         Validator validator = getValidator();
         Set<ConstraintViolation<T>> errors = validator.validate(object);
-        if (errors == null) {
+        if (errors == null || errors.isEmpty()) {
             return null;
         } else {
             for (ConstraintViolation constraintViolation : errors) {
                 sb.append(",").append(constraintViolation.getMessage());
             }
+            return sb.toString().substring(1);
         }
-        return sb.toString().substring(1);
     }
 
 

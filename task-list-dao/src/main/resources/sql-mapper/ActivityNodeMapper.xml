@@ -127,4 +127,9 @@
         SET STATUS = 2
         WHERE node_id = #{nodeId}
     </update>
+
+    <delete id="deleteByActivityId" parameterType="Integer">
+        DELETE FROM task_list_node
+        WHERE activity_id = #{activityId}
+    </delete>
 </mapper>

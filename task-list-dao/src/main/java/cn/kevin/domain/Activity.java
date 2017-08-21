@@ -1,6 +1,9 @@
 package cn.kevin.domain;
 
+import cn.kevin.annotation.JsonNumberFormat;
+import cn.kevin.annotation.NumberSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -45,6 +48,8 @@ public class Activity {
     /**
      * 完成任务百分比
      */
+    @JsonNumberFormat(format = "##0.00'%'")
+    @JsonSerialize(using = NumberSerializer.class)
     private Double taskCompletedPercent;
 
     /**
@@ -60,6 +65,7 @@ public class Activity {
     /**
      * 当前时间
      */
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date currentDueTime;
 
     /**

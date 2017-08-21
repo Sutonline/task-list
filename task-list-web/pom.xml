@@ -13,6 +13,7 @@
         <mariadb.javaclient.version>2.0.3</mariadb.javaclient.version>
         <spring.security.version>4.2.2.RELEASE</spring.security.version>
         <springfox.swagger.version>2.7.0</springfox.swagger.version>
+        <fastJson.version>1.2.37</fastJson.version>
     </properties>
 
     <artifactId>task-list-web</artifactId>
@@ -90,6 +91,11 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox.swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastJson.version}</version>
         </dependency>
     </dependencies>
 
