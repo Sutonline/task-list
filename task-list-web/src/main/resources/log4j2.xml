@@ -3,37 +3,34 @@
     <Properties>
         <Property name="log-path">${log.base}</Property>
         <Property name="archive">${log-path}/archive</Property>
+        <Property name="LOG_PATTERN">%d [%-6p] %C{1}.%M(%F:%L) – %msg%xEx%n</Property>
     </Properties>
-
     <Appenders>
-        <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout>
-                <Pattern>
-                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-                </Pattern>
-            </PatternLayout>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}" />
         </Console>
         <File name="file-appender" fileName="${log-path}/taskList.log">
             <PatternLayout>
-                <Pattern>
-                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n
-                </Pattern>
+                <Pattern pattern="${LOG_PATTERN}"/>
             </PatternLayout>
         </File>
     </Appenders>
-
     <Loggers>
-        <!-- <Logger name="cn.kevin" level="info">
-            <AppenderRef ref="file-appender" />
-        </Logger>-->
+        <Logger name="org.apache.catalina.startup.DigesterFactory" level="error" />
+        <Logger name="org.apache.catalina.util.LifecycleBase" level="error" />
+        <Logger name="org.apache.coyote.http11.Http11NioProtocol" level="warn" />
+        <logger name="org.apache.sshd.common.util.SecurityUtils" level="warn"/>
+        <Logger name="org.apache.tomcat.util.net.NioSelectorPool" level="warn" />
+        <Logger name="org.crsh.plugin" level="warn" />
+        <logger name="org.crsh.ssh" level="warn"/>
+        <Logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="error" />
+        <Logger name="org.mybatis" level="warn" />
+        <Logger name="org.hibernate.validator.internal.util.Version" level="warn" />
+        <logger name="org.thymeleaf" level="warn"/>
+        <logger name="cn.kevin" level="info" />
         <Root level="info">
             <AppenderRef ref="${log.appender}"/>
-            <AppenderRef ref="console"/>
+            <AppenderRef ref="Console"/>
         </Root>
-
-        <!--<logger name="org.springframework" level="info">
-            <AppenderRef ref="console" />
-        </logger>-->
     </Loggers>
-
 </Configuration>

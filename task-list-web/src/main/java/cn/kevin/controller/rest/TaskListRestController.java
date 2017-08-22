@@ -190,8 +190,8 @@ public class TaskListRestController {
         return activityService.listByQuery(query);
     }
 
-    @GetMapping(value = "/getActivityAndNodes")
-    public Activity getActivityAndNodes(Integer activityId) {
+    @GetMapping(value = "/getActivityAndNodes/{activityId}")
+    public Activity getActivityAndNodes(@PathVariable Integer activityId) {
         return activityService.getActivityAndNoes(activityId);
     }
 

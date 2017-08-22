@@ -29,7 +29,8 @@ public class TaskListTest {
         TaskList taskList = new TaskList();
         taskList.setContent("xxxx");
         taskList.setState("02");
-        taskListMapper.insert(taskList);
+        //taskListMapper.insert(taskList);
+        throw new RuntimeException("测试异常");
     }
 
     @Test

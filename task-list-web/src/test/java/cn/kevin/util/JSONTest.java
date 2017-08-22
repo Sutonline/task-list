@@ -45,4 +45,10 @@ public class JSONTest {
         DecimalFormat format = new DecimalFormat("##0.00'%'");
         log.info("格式化的结果是: {}", format.format(d));
     }
+
+    @Test
+    public void testThrowException() {
+        log.info("开始抛出异常");
+        throw new RuntimeException("测试异常");
+    }
 }

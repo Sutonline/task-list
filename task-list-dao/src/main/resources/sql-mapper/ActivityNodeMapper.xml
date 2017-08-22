@@ -125,7 +125,7 @@
     <update id="completedNode" parameterType="Integer">
         UPDATE task_list_node
         SET STATUS = 2
-        WHERE node_id = #{nodeId}
+        WHERE node_id = #{nodeId} and status = 1
     </update>
 
     <delete id="deleteByActivityId" parameterType="Integer">

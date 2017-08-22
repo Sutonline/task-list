@@ -10,6 +10,7 @@ import cn.kevin.domain.query.ActivityQuery;
 import cn.kevin.enums.ActivityNodeStatusEnum;
 import cn.kevin.enums.ActivityStatusEnum;
 import cn.kevin.service.ActivityService;
+import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import static cn.kevin.enums.ActivityNodeStatusEnum.fromStringCode;
  * Created by yongkang.zhang on 2017/8/11.
  */
 @Service
+@Slf4j
 public class ActivityServiceImpl implements ActivityService {
 
     private ActivityMapper activityMapper;
@@ -38,15 +40,21 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public int insert(Activity activity) {
-        int cnt = activityMapper.insert(activity);
-        List<ActivityNode> activityNodeList = activity.getActivityNodeList();
-        if (activityNodeList != null && ! activityNodeList.isEmpty()) {
-            activityNodeList.forEach(node -> {
-                node.setActivityId(activity.getActivityId());
-                activityNodeMapper.insert(node);
-            });
+        int cnt;
+        try {
+            cnt = activityMapper.insert(activity);
+            List<ActivityNode> activityNodeList = activity.getActivityNodeList();
+            if (activityNodeList != null && ! activityNodeList.isEmpty()) {
+                activityNodeList.forEach(node -> {
+                    node.setActivityId(activity.getActivityId());
+                    activityNodeMapper.insert(node);
+                });
+            }
+        } catch (Exception e) {
+            log.error("保存activity[{}]出错", activity, e);
+            throw new RuntimeException(e);
         }
         return cnt;
     }
@@ -100,7 +108,7 @@ public class ActivityServiceImpl implements ActivityService {
             }
             activity.setTaskTotalCnt(totalCnt);
             activity.setTaskUncompletedCnt(unCompletedCnt);
-            activity.setTaskCompletedPercent((double) (Math.round(((double) completedCnt / (double) totalCnt) * 100.0) / 100));
+            activity.setTaskCompletedPercent(((double) Math.round(((double) completedCnt / totalCnt) * 100.0)));
             activity.setActivityNodeList(activityNodeList);
         }
 
@@ -123,31 +131,35 @@ public class ActivityServiceImpl implements ActivityService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void completeActivityNode(Integer nodeId) {
-        // 1. 完成当前任务
-        activityNodeMapper.completedNode(nodeId);
+        try {
+            // 1. 完成当前任务
+            activityNodeMapper.completedNode(nodeId);
 
-        // 2.更新涉及的node及activity
-        ActivityNode udpNode = activityNodeMapper.selectByPrimaryKey(nodeId);
-        Integer activityId = udpNode.getActivityId();
-        ActivityNodeQuery activityNodeQuery = new ActivityNodeQuery();
-        activityNodeQuery.setActivityId(activityId);
-        activityNodeQuery.setSortNo(udpNode.getSortNo());
-        activityNodeQuery.setOrderBy(" sort_no asc");
-        PageRequest pageRequest = new PageRequest();
-        pageRequest.setPageIndex(1);
-        pageRequest.setPageSize(1);
-        List<ActivityNode> activityNodes = activityNodeMapper.listByQuery(activityNodeQuery, pageRequest);
-        if (activityNodes == null || activityNodes.isEmpty()) { //如果是最后一个任务就完成整个activity
-            Activity activity = activityMapper.selectByPrimaryKey(activityId);
-            activity.setStatus(ActivityStatusEnum.DONE.getCode());
-            activityMapper.updateByPrimaryKey(activity);
-        } else { //否则启用下一个任务为进行中
-            ActivityNode activityNode = activityNodes.get(0);
-            activityNode.setStatus(ActivityNodeStatusEnum.RUNNING.getCode());
-            activityNode.setDueTime(new LocalDate(new Date()).plusDays(activityNode.getNeedDays()).toDate());
-            activityNodeMapper.updateByPrimaryKey(activityNode);
+            // 2.更新涉及的node及activity
+            ActivityNode udpNode = activityNodeMapper.selectByPrimaryKey(nodeId);
+            Integer activityId = udpNode.getActivityId();
+            ActivityNodeQuery activityNodeQuery = new ActivityNodeQuery();
+            activityNodeQuery.setActivityId(activityId);
+            activityNodeQuery.setSortNo(udpNode.getSortNo());
+            activityNodeQuery.setOrderBy(" sort_no asc");
+            PageRequest pageRequest = new PageRequest();
+            pageRequest.setPageIndex(1);
+            pageRequest.setPageSize(1);
+            List<ActivityNode> activityNodes = activityNodeMapper.listByQuery(activityNodeQuery, pageRequest);
+            if (activityNodes == null || activityNodes.isEmpty()) { //如果是最后一个任务就完成整个activity
+                Activity activity = activityMapper.selectByPrimaryKey(activityId);
+                activity.setStatus(ActivityStatusEnum.DONE.getCode());
+                activityMapper.updateByPrimaryKey(activity);
+            } else { //否则启用下一个任务为进行中
+                ActivityNode activityNode = activityNodes.get(0);
+                activityNode.setStatus(ActivityNodeStatusEnum.RUNNING.getCode());
+                activityNode.setDueTime(new LocalDate(new Date()).plusDays(activityNode.getNeedDays()).toDate());
+                activityNodeMapper.updateByPrimaryKey(activityNode);
+            }
+        } catch (Exception e) {
+            log.error("完成任务异常", e);
+            throw new RuntimeException("完成任务异常，异常信息是： " + e);
         }
-
     }
 
 
@@ -173,7 +185,7 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteActivityAndNode(Integer activityId) {
         activityMapper.deleteByPrimaryKey(activityId);
         activityNodeMapper.deleteByActivityId(activityId);
