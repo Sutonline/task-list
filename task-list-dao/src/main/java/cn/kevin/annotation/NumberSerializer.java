@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 
 import java.io.IOException;
-import java.lang.reflect.AnnotatedElement;
 import java.text.DecimalFormat;
 
 /**
