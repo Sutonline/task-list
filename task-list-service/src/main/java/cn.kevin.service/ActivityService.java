@@ -20,6 +20,8 @@ public interface ActivityService {
 
     /**
      * 根据activityId进行更新
+     * 这里会有activity信息变更
+     * 未完成任务的节点任务顺序调整和新增
      * @param activity 更新对象
      * @return 更新结果
      */

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static cn.kevin.enums.ActivityNodeStatusEnum.fromStringCode;
 
@@ -60,8 +61,34 @@ public class ActivityServiceImpl implements ActivityService {
     }
 
     @Override
+    @Transactional
     public int update(Activity activity) {
-        return activityMapper.updateByPrimaryKey(activity);
+        try {
+            int cnt = activityMapper.updateByPrimaryKey(activity);
+            List<ActivityNode> activityNodeList = activity.getActivityNodeList();
+            // 如果列表为空，那么删除所有activityNode的数据
+            Integer activityId = activity.getActivityId();
+            if (activityNodeList == null || activityNodeList.isEmpty()) {
+                activityNodeMapper.deleteByActivityId(activityId);
+            } else {
+                ActivityNode node;
+                for (int i = 0; i < activityNodeList.size(); i++) {
+                    node = activityNodeList.get(i);
+                    if (node.getStatus() == null || Objects.equals(node.getStatus(), ActivityNodeStatusEnum.NOT_RUN_YET.getCode())) {
+                        node.setSortNo((float) i);
+                        node.setActivityId(activityId);
+                        node.setStatus(ActivityNodeStatusEnum.NOT_RUN_YET.getCode());
+                        node.setWarnCnt(3);
+                        activityNodeMapper.updateByPrimaryKey(node);
+                    }
+                }
+            }
+            return cnt;
+        } catch (Exception e) {
+            log.error("更新activity[{}]信息失败", activity, e);
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override

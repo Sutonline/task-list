@@ -234,7 +234,8 @@ public class TaskListRestController {
     }
 
     @PutMapping(value = "/updateActivity")
-    public String updateActivity(Activity activity) {
+    public String updateActivity(String activityJson) {
+        Activity activity = JSON.parseObject(activityJson, Activity.class);
         int cnt = activityService.update(activity);
         if (cnt == 1) {
             return "更新成功";
