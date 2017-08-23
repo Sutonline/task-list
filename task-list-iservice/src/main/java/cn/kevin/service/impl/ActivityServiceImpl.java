@@ -74,13 +74,14 @@ public class ActivityServiceImpl implements ActivityService {
                 ActivityNode node;
                 for (int i = 0; i < activityNodeList.size(); i++) {
                     node = activityNodeList.get(i);
-                    boolean newAdd = node.getStatus() == null;
+                    boolean newAdd = node.getStatus() == null || node.getStatus() == -1;
                     if (newAdd || Objects.equals(node.getStatus(), ActivityNodeStatusEnum.NOT_RUN_YET.getCode())) {
                         node.setSortNo((float) i);
                         node.setActivityId(activityId);
                         node.setStatus(ActivityNodeStatusEnum.NOT_RUN_YET.getCode());
                         node.setWarnCnt(3);
                         if (newAdd) {
+                            node.setCreateTime(new Date());
                             activityNodeMapper.insert(node);
                         } else {
                             activityNodeMapper.updateByPrimaryKey(node);
