@@ -233,8 +233,11 @@ public class TaskListRestController {
         return "完成成功";
     }
 
-    @PutMapping(value = "/updateActivity")
+    @PostMapping(value = "/updateActivity")
     public String updateActivity(String activityJson) {
+        if (Strings.isNullOrEmpty(activityJson)) {
+            return "activity为null, 不能更新";
+        }
         Activity activity = JSON.parseObject(activityJson, Activity.class);
         int cnt = activityService.update(activity);
         if (cnt == 1) {
