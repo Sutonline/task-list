@@ -21,7 +21,7 @@
         <spring.version>4.3.7.RELEASE</spring.version>
         <junit.version>4.12</junit.version>
         <lombok.version>1.16.16</lombok.version>
-        <slf4j.version>1.7.21</slf4j.version>
+        <slf4j.version>1.7.25</slf4j.version>
         <log4j2.verion>2.7</log4j2.verion>
         <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
@@ -85,9 +85,19 @@
             <artifactId>log4j-web</artifactId>
             <version>${log4j2.verion}</version>
         </dependency>
+        <dependency> <!-- 桥接：告诉Slf4j使用Log4j2 -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j2.verion}</version>
+        </dependency>
+        <dependency> <!-- 桥接：告诉commons logging使用Log4j2 -->
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
+            <version>${log4j2.verion}</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
+            <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
         <dependency>
@@ -149,6 +159,7 @@
     </dependencies>
 
     <build>
+        <finalName>task-list-web</finalName>
         <plugins>
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
@@ -168,6 +179,16 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.slf4j</groupId>
+                            <artifactId>slf4j-log4j12</artifactId>
+                        </exclude>
+                        <exclude>
+                            <groupId>log4j</groupId>
+                            <artifactId>log4j</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

@@ -11,7 +11,7 @@ import cn.kevin.domain.page.Page;
 import cn.kevin.domain.page.PageRequest;
 import cn.kevin.domain.query.ActivityQuery;
 import cn.kevin.domain.query.TaskListQuery;
-import cn.kevin.helper.WrapperResponseBody;
+import cn.kevin.helper.CrossOriginResponse;
 import cn.kevin.service.ActivityService;
 import cn.kevin.util.Constants;
 import cn.kevin.util.ValidationUtil;
@@ -32,7 +32,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/taskList")
 @Slf4j
-@WrapperResponseBody
+@CrossOriginResponse
 public class TaskListRestController {
 
     private final TaskListMapper taskListMapper;

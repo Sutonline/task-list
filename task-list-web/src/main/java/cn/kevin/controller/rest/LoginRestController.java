@@ -1,7 +1,7 @@
 package cn.kevin.controller.rest;
 
 import cn.kevin.common.Result;
-import cn.kevin.helper.WrapperResponseBody;
+import cn.kevin.helper.CrossOriginResponse;
 import cn.kevin.service.LoginService;
 import cn.kevin.util.Constants;
 import com.google.common.base.Strings;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +22,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping(value = "/loginRest")
 @Slf4j
-@WrapperResponseBody
+@CrossOriginResponse
 public class LoginRestController {
 
     @Autowired
@@ -54,7 +53,6 @@ public class LoginRestController {
             result.setMessage("用户名或密码错误");
             result.setT(Boolean.FALSE);
         }
-
         return result;
     }
 

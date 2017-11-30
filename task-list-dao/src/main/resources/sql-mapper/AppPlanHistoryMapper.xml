@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kevin.dao.AppPlanHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="cn.kevin.domain.AppPlanHistory">
+        <id column="plan_id" property="planId" jdbcType="BIGINT"/>
+        <result column="keep_days" property="keepDays" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="selectClause">
+        SELECT
+            plan_id,
+            keep_days,
+            create_time
+        FROM app_plan_history
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        DELETE FROM app_plan_history
+        WHERE plan_id = #{planId,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="cn.kevin.domain.AppPlanHistory">
+        INSERT INTO app_plan_history (plan_id, keep_days, create_time
+        )
+        VALUES (#{planId,jdbcType=BIGINT}, #{keepDays,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.AppPlanHistory">
+        UPDATE app_plan_history
+        SET keep_days   = #{keepDays,jdbcType=INTEGER},
+            create_time = #{createTime,jdbcType=TIMESTAMP}
+        WHERE plan_id = #{planId,jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        <include refid="selectClause" />
+        WHERE plan_id = #{planId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+        FROM app_plan_history
+    </select>
+
+</mapper>

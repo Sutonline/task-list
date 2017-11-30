@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.kevin.dao.AppPlanMapper">
+
+    <!-- result map -->
+    <resultMap id="BaseResultMap" type="cn.kevin.domain.AppPlan">
+        <result column="plan_id" property="planId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="description" property="desc" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="TINYINT" />
+        <result column="keep_days" property="keepDays" jdbcType="INTEGER" />
+        <result column="give_cnt" property="giveCnt" jdbcType="INTEGER" />
+        <result column="success_ups" property="successUps" jdbcType="INTEGER" />
+        <result column="longest_days" property="longestDays" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="selectClause">
+        SELECT
+            plan_id,
+            name,
+            description,
+            create_time,
+            status,
+            keep_days,
+            give_cnt,
+            success_ups,
+            longest_days
+        FROM app_plan
+    </sql>
+
+    <sql id="condition">
+        <where>
+            <if test="planId != null">
+                PLAN_ID = #{planId}
+            </if>
+            <if test="status != null">
+                STATUS = #{status}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="updateClause">
+        UPDATE app_plan
+        <set>
+            <if test="name != null">
+                NAME = #{name},
+            </if>
+            <if test="desc != null">
+                DESCRIPTION = #{desc},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="status !=  null">
+                STATUS = #{status},
+            </if>
+            <if test="keepDays != null">
+                KEEP_DAYS = #{keepDays},
+            </if>
+            <if test="giveCnt != null">
+                GIVE_CNT = #{giveCnt},
+            </if>
+            <if test="successUps != null">
+                SUCCESS_UPS = #{successUps},
+            </if>
+            <if test="longestDays != null">
+                LONGEST_DAYS = #{longestDays},
+            </if>
+        </set>
+    </sql>
+
+    <insert id="insert" parameterType="cn.kevin.domain.AppPlan">
+        INSERT INTO app_plan (plan_id, name, description,
+                              create_time, status, keep_days, give_cnt, success_ups, longest_days)
+        VALUES (#{planId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP}, #{status}, #{keepDays}, #{giveCnt}, #{successUps}, #{longestDays})
+    </insert>
+
+    <update id="updateLast">
+        UPDATE APP_PLAN SET CREATE_TIME = null where status != 1;
+    </update>
+
+    <update id="update">
+        <include refid="updateClause" />
+        WHERE PLAN_ID = #{planId}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+    </select>
+
+    <select id="selectLast" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+        WHERE CREATE_TIME IS NULL AND status != 1;
+    </select>
+    <select id="getByPlanId" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+        WHERE plan_id = #{planId}
+    </select>
+
+    <select id="listByQuery" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+        <include refid="condition" />
+    </select>
+
+</mapper>
