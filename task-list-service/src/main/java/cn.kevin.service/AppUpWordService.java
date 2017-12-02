@@ -17,4 +17,5 @@ public interface AppUpWordService {
 
     Boolean save(AppUpWord upWord);
 
+
 }

@@ -32,7 +32,7 @@ public class AppRestController {
         this.appUpWordService = appUpWordService;
     }
 
-    @RequestMapping(value = "listAllPlan", method = RequestMethod.GET)
+    @RequestMapping(value = "/listAllPlan", method = RequestMethod.GET)
     public List<AppPlan> listAll() {
          return appPlanService.listAll();
     }
@@ -44,7 +44,7 @@ public class AppRestController {
         return Boolean.TRUE;
     }
 
-    @RequestMapping(value = "/giveUp/${planId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/giveUp/{planId}", method = RequestMethod.PUT)
     public Boolean giveUp(@PathVariable(value = "planId") Long planId) {
         appPlanService.giveUp(planId);
         return Boolean.TRUE;
@@ -61,7 +61,7 @@ public class AppRestController {
         return appPlanService.listRecent();
     }
 
-    @GetMapping(value = "/deleteRecentPlan")
+    @PutMapping(value = "/deleteRecentPlan")
     public Boolean deleteRecentPlan() {
         return appPlanService.deleteRecent();
     }
@@ -71,13 +71,13 @@ public class AppRestController {
         return appUpWordService.listAll();
     }
 
-    @PutMapping(value = "/deleteUpWord/{{id}")
+    @PutMapping(value = "/deleteUpWord/{id}")
     public Boolean deleteUpWord(@PathVariable(value = "id") Long id) {
         return appUpWordService.delete(id);
     }
 
     @PutMapping(value = "/save")
-    public Boolean save(AppUpWord word) {
+    public Boolean save(@RequestBody AppUpWord word) {
         return appUpWordService.save(word);
     }
 
