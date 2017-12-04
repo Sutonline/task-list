@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,7 +52,7 @@ public class AppRestController {
     }
 
     @RequestMapping(value = "/updatePlan", method = RequestMethod.PUT)
-    public Boolean updatePlan(AppPlan plan) {
+    public Boolean updatePlan(@RequestBody AppPlan plan) {
         appPlanService.update(plan);
         return Boolean.TRUE;
     }
@@ -65,6 +66,22 @@ public class AppRestController {
     public Boolean deleteRecentPlan() {
         return appPlanService.deleteRecent();
     }
+
+    @GetMapping(value = "/getCurrent")
+    public AppPlan getCurrent() {
+        return appPlanService.getCurrent();
+    }
+
+    @GetMapping(value = "/isCheck")
+    public Boolean isCheck(@RequestParam(value = "planId") Long planId, @RequestParam(value = "checkDate") Date checkDate) {
+        return appPlanService.isCheck(planId, checkDate);
+    }
+
+    @PutMapping(value = "/check")
+    public Boolean checkPlan(@RequestBody AppPlan plan) {
+        return appPlanService.check(plan);
+    }
+
 
     @GetMapping(value = "/listAllUpWord")
     public List<AppUpWord> listAllUpWord() {

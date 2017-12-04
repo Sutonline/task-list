@@ -36,4 +36,6 @@ public class AppPlan {
     @JsonProperty(value = "longestDays")
     private Integer longestDays;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date checkDate;
 }

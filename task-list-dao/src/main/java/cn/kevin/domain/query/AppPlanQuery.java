@@ -2,6 +2,8 @@ package cn.kevin.domain.query;
 
 import lombok.Data;
 
+import java.util.Date;
+
 /**
  * 查询实体
  * created by yongkang.zhang
@@ -12,5 +14,6 @@ public class AppPlanQuery {
 
     private Long planId;
     private Integer status;
+    private Date checkDate;
 
 }

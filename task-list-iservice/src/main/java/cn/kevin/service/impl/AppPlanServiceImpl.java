@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -81,5 +82,42 @@ public class AppPlanServiceImpl implements AppPlanService {
     @Override
     public List<AppPlan> listAll() {
         return mapper.selectAll();
+    }
+
+    @Override
+    public AppPlan getCurrent() {
+        AppPlanQuery query = new AppPlanQuery();
+        query.setStatus(AppPlanStatusEnum.EXECUTING.getCode());
+        List<AppPlan> appPlans = mapper.listByQuery(query);
+        if (appPlans.size() > 1) {
+            throw new RuntimeException("只能有一个当前计划");
+        }
+        return appPlans.get(0);
+    }
+
+    @Override
+    public Boolean isCheck(Long planId, Date checkDate) {
+        AppPlanQuery query = new AppPlanQuery();
+        query.setPlanId(planId);
+        query.setCheckDate(checkDate);
+        query.setStatus(AppPlanStatusEnum.EXECUTING.getCode());
+        return mapper.listByQuery(query).size() == 1;
+    }
+
+    @Override
+    public Boolean check(AppPlan plan) {
+        AppPlanQuery query = new AppPlanQuery();
+        query.setStatus(AppPlanStatusEnum.EXECUTING.getCode());
+        query.setPlanId(plan.getPlanId());
+        List<AppPlan> appPlans = mapper.listByQuery(query);
+        if (appPlans == null || appPlans.size() != 1) {
+            throw new RuntimeException("当前计划异常");
+        }
+        AppPlan upPlan = appPlans.get(0);
+        upPlan.setKeepDays(plan.getKeepDays() + 1);
+        upPlan.setCheckDate(plan.getCheckDate());
+        upPlan.setCreateTime(new Date());
+        mapper.update(upPlan);
+        return Boolean.TRUE;
     }
 }

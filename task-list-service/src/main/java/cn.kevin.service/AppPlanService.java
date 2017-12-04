@@ -2,6 +2,7 @@ package cn.kevin.service;
 
 import cn.kevin.domain.AppPlan;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,4 +48,24 @@ public interface AppPlanService {
 
     List<AppPlan> listAll();
 
+    /**
+     * 获取当前计划
+     * @return 当前计划
+     */
+    AppPlan getCurrent();
+
+    /**
+     * 检查date是否签到
+     * @param planId 计划id
+     * @param checkDate 日期
+     * @return 是否签到
+     */
+    Boolean isCheck(Long planId, Date checkDate);
+
+    /**
+     * 签到
+     * @param plan 计划
+     * @return 签到结果
+     */
+    Boolean check(AppPlan plan);
 }

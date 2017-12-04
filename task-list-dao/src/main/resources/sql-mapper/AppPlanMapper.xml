@@ -13,6 +13,7 @@
         <result column="give_cnt" property="giveCnt" jdbcType="INTEGER" />
         <result column="success_ups" property="successUps" jdbcType="INTEGER" />
         <result column="longest_days" property="longestDays" jdbcType="INTEGER" />
+        <result column="check_date" property="checkDate" jdbcType="DATE" />
     </resultMap>
 
     <sql id="selectClause">
@@ -25,7 +26,8 @@
             keep_days,
             give_cnt,
             success_ups,
-            longest_days
+            longest_days,
+            check_date
         FROM app_plan
     </sql>
 
@@ -35,7 +37,10 @@
                 PLAN_ID = #{planId}
             </if>
             <if test="status != null">
-                STATUS = #{status}
+                AND STATUS = #{status}
+            </if>
+            <if test="checkDate != null">
+                AND CHECK_DATE = #{checkDate}
             </if>
         </where>
     </sql>
@@ -67,18 +72,21 @@
             <if test="longestDays != null">
                 LONGEST_DAYS = #{longestDays},
             </if>
+            <if test="checkDate != null">
+                CHECK_DATE = #{checkDate}
+            </if>
         </set>
     </sql>
 
     <insert id="insert" parameterType="cn.kevin.domain.AppPlan">
         INSERT INTO app_plan (plan_id, name, description,
-                              create_time, status, keep_days, give_cnt, success_ups, longest_days)
+                              create_time, status, keep_days, give_cnt, success_ups, longest_days, check_date)
         VALUES (#{planId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
-                #{createTime,jdbcType=TIMESTAMP}, #{status}, #{keepDays}, #{giveCnt}, #{successUps}, #{longestDays})
+                #{createTime,jdbcType=TIMESTAMP}, #{status}, #{keepDays}, #{giveCnt}, #{successUps}, #{longestDays}, #{checkDate})
     </insert>
 
     <update id="updateLast">
-        UPDATE APP_PLAN SET CREATE_TIME = null where status != 1;
+        UPDATE APP_PLAN SET CREATE_TIME = null, CHECK_DATE = null where status != 1;
     </update>
 
     <update id="update">
