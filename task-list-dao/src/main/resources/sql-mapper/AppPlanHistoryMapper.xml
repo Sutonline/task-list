@@ -26,7 +26,7 @@
     <insert id="insert" parameterType="cn.kevin.domain.AppPlanHistory">
         INSERT INTO app_plan_history (plan_id, check_date, create_time
         )
-        VALUES (#{planId,jdbcType=BIGINT}, #{check_date}, #{createTime,jdbcType=TIMESTAMP}
+        VALUES (#{planId,jdbcType=BIGINT}, #{checkDate}, #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
 

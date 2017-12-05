@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
         <Property name="LOG_PATTERN">%d [%-6p] %C{1}.%M(%F:%L) – %msg%xEx%n</Property>
