@@ -1,6 +1,7 @@
 package cn.kevin.service;
 
 import cn.kevin.domain.AppPlan;
+import cn.kevin.domain.AppPlanHistory;
 
 import java.util.Date;
 import java.util.List;
@@ -68,4 +69,11 @@ public interface AppPlanService {
      * @return 签到结果
      */
     Boolean check(AppPlan plan);
+
+    /**
+     * 签到的日期
+     * @param planId 计划id
+     * @return 签到的日期
+     */
+    List<AppPlanHistory> listByPlanId(Long planId);
 }

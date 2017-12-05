@@ -1,6 +1,7 @@
 package cn.kevin.controller.rest;
 
 import cn.kevin.domain.AppPlan;
+import cn.kevin.domain.AppPlanHistory;
 import cn.kevin.domain.AppUpWord;
 import cn.kevin.helper.ResponseResultWrapper;
 import cn.kevin.service.AppPlanService;
@@ -82,6 +83,10 @@ public class AppRestController {
         return appPlanService.check(plan);
     }
 
+    @GetMapping(value = "/listHistory/{planId}")
+    public List<AppPlanHistory> listHistory(@PathVariable(value = "planId") Long planId) {
+        return appPlanService.listByPlanId(planId);
+    }
 
     @GetMapping(value = "/listAllUpWord")
     public List<AppUpWord> listAllUpWord() {

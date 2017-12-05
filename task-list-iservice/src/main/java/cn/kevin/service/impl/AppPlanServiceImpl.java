@@ -1,7 +1,9 @@
 package cn.kevin.service.impl;
 
+import cn.kevin.dao.AppPlanHistoryMapper;
 import cn.kevin.dao.AppPlanMapper;
 import cn.kevin.domain.AppPlan;
+import cn.kevin.domain.AppPlanHistory;
 import cn.kevin.domain.query.AppPlanQuery;
 import cn.kevin.enums.AppPlanStatusEnum;
 import cn.kevin.service.AppPlanService;
@@ -20,10 +22,12 @@ import java.util.List;
 public class AppPlanServiceImpl implements AppPlanService {
 
     private final AppPlanMapper mapper;
+    private final AppPlanHistoryMapper historyMapper;
 
     @Autowired
-    public AppPlanServiceImpl(AppPlanMapper mapper) {
+    public AppPlanServiceImpl(AppPlanMapper mapper, AppPlanHistoryMapper historyMapper) {
         this.mapper = mapper;
+        this.historyMapper = historyMapper;
     }
 
     @Override
@@ -118,6 +122,19 @@ public class AppPlanServiceImpl implements AppPlanService {
         upPlan.setCheckDate(plan.getCheckDate());
         upPlan.setCreateTime(new Date());
         mapper.update(upPlan);
+
+        // 保存签到历史
+        AppPlanHistory history = new AppPlanHistory();
+        history.setPlanId(plan.getPlanId());
+        history.setCheckDate(plan.getCheckDate());
+        history.setCreateTime(new Date());
+        historyMapper.insert(history);
         return Boolean.TRUE;
+    }
+
+
+    @Override
+    public List<AppPlanHistory> listByPlanId(Long planId) {
+        return historyMapper.listByPlanId(planId);
     }
 }

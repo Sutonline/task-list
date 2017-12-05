@@ -3,15 +3,17 @@
 <mapper namespace="cn.kevin.dao.AppPlanHistoryMapper">
 
     <resultMap id="BaseResultMap" type="cn.kevin.domain.AppPlanHistory">
-        <id column="plan_id" property="planId" jdbcType="BIGINT"/>
-        <result column="keep_days" property="keepDays" jdbcType="INTEGER"/>
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="plan_id" property="planId" jdbcType="BIGINT"/>
+        <result column="check_date" property="checkDate" jdbcType="DATE" />
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="selectClause">
         SELECT
+            id,
             plan_id,
-            keep_days,
+            check_date,
             create_time
         FROM app_plan_history
     </sql>
@@ -22,18 +24,11 @@
     </delete>
 
     <insert id="insert" parameterType="cn.kevin.domain.AppPlanHistory">
-        INSERT INTO app_plan_history (plan_id, keep_days, create_time
+        INSERT INTO app_plan_history (plan_id, check_date, create_time
         )
-        VALUES (#{planId,jdbcType=BIGINT}, #{keepDays,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+        VALUES (#{planId,jdbcType=BIGINT}, #{check_date}, #{createTime,jdbcType=TIMESTAMP}
         )
     </insert>
-
-    <update id="updateByPrimaryKey" parameterType="cn.kevin.domain.AppPlanHistory">
-        UPDATE app_plan_history
-        SET keep_days   = #{keepDays,jdbcType=INTEGER},
-            create_time = #{createTime,jdbcType=TIMESTAMP}
-        WHERE plan_id = #{planId,jdbcType=BIGINT}
-    </update>
 
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
         <include refid="selectClause" />
@@ -43,6 +38,12 @@
     <select id="selectAll" resultMap="BaseResultMap">
         <include refid="selectClause" />
         FROM app_plan_history
+    </select>
+
+    <select id="listByPlanId" resultMap="BaseResultMap">
+        <include refid="selectClause" />
+        FROM app_plan_history
+        WHERE plan_id = #{planId}
     </select>
 
 </mapper>

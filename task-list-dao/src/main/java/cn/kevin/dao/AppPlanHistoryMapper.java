@@ -13,5 +13,5 @@ public interface AppPlanHistoryMapper {
 
     List<AppPlanHistory> selectAll();
 
-    int updateByPrimaryKey(AppPlanHistory record);
+    List<AppPlanHistory> listByPlanId(Long planId);
 }
