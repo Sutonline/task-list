@@ -7,7 +7,7 @@
         <!-- 配置获取连接等待超时的时间 -->
         <property name="maxWait" value="15000"/>
         <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
-        <property name="timeBetweenEvictionRunsMillis" value="6000000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="1800000"/>
         <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
         <property name="minEvictableIdleTimeMillis" value="18000000"/>
         <property name="validationQuery" value="select 1"/>

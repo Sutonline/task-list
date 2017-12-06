@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * created by yongkang.zhang
+ * @author yongkang.zhang
  * added at 2017/11/30
  */
 @Service
@@ -60,9 +62,10 @@ public class AppPlanServiceImpl implements AppPlanService {
         plan.setKeepDays(0);
         plan.setSuccessUps(0);
         // 如果当前天数大于最长天数，那么就设置
-        if (plan.getLongestDays() == null || plan.getKeepDays() == null || plan.getKeepDays() > plan.getLongestDays()) {
+        if (plan.getLongestDays() == null || plan.getKeepDays() > plan.getLongestDays()) {
             plan.setLongestDays(plan.getKeepDays());
         }
+        mapper.update(plan);
         return Boolean.TRUE;
     }
 
@@ -117,18 +120,23 @@ public class AppPlanServiceImpl implements AppPlanService {
         if (appPlans == null || appPlans.size() != 1) {
             throw new RuntimeException("当前计划异常");
         }
-        AppPlan upPlan = appPlans.get(0);
-        upPlan.setKeepDays((plan.getKeepDays() == null ? 0 : plan.getKeepDays()) + 1);
-        upPlan.setCheckDate(plan.getCheckDate());
-        upPlan.setCreateTime(new Date());
-        mapper.update(upPlan);
 
-        // 保存签到历史
-        AppPlanHistory history = new AppPlanHistory();
-        history.setPlanId(plan.getPlanId());
-        history.setCheckDate(plan.getCheckDate());
-        history.setCreateTime(new Date());
-        historyMapper.insert(history);
+        // 如果当前计划checkDate已经签到，那么直接退出
+        AppPlan upPlan = appPlans.get(0);
+        if (! Objects.equals(upPlan.getCheckDate(), plan.getCheckDate())) {
+            upPlan.setKeepDays((plan.getKeepDays() == null ? 0 : plan.getKeepDays()) + 1);
+            upPlan.setCheckDate(plan.getCheckDate());
+            upPlan.setCreateTime(new Date());
+            mapper.update(upPlan);
+
+            // 保存签到历史
+            AppPlanHistory history = new AppPlanHistory();
+            history.setPlanId(plan.getPlanId());
+            history.setCheckDate(plan.getCheckDate());
+            history.setCreateTime(new Date());
+            historyMapper.insert(history);
+        }
+
         return Boolean.TRUE;
     }
 

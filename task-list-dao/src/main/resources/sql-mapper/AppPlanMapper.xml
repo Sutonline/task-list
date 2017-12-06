@@ -100,7 +100,7 @@
 
     <select id="selectLast" resultMap="BaseResultMap">
         <include refid="selectClause" />
-        WHERE CREATE_TIME IS NULL AND status != 1;
+        WHERE CREATE_TIME IS NOT NULL AND status != 1;
     </select>
     <select id="getByPlanId" resultMap="BaseResultMap">
         <include refid="selectClause" />
