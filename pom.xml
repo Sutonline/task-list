@@ -13,7 +13,7 @@
         <module>task-list-dao</module>
         <module>task-list-service</module>
         <module>task-list-iservice</module>
-        <module>common-dao</module>
+        <module>common</module>
     </modules>
 
     <properties>
@@ -36,6 +36,7 @@
         <validation.api.version>1.0.0.GA</validation.api.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
         <jodatime.version>2.9.9</jodatime.version>
+        <fastjson.version>1.2.41</fastjson.version>
     </properties>
 
     <dependencies>
@@ -155,6 +156,11 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${jodatime.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
         </dependency>
     </dependencies>
 

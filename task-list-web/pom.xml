@@ -15,6 +15,7 @@
         <springfox.swagger.version>2.7.0</springfox.swagger.version>
         <fastJson.version>1.2.37</fastJson.version>
         <tomcat.version>8.5.20</tomcat.version>
+        <okHttp.version>3.9.1</okHttp.version>
     </properties>
 
     <artifactId>task-list-web</artifactId>

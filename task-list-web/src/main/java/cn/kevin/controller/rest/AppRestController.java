@@ -1,11 +1,14 @@
 package cn.kevin.controller.rest;
 
+import cn.kevin.common.enums.VultrRequestTypeEnum;
 import cn.kevin.domain.AppPlan;
 import cn.kevin.domain.AppPlanHistory;
 import cn.kevin.domain.AppUpWord;
+import cn.kevin.domain.dto.VultrDomain;
 import cn.kevin.helper.ResponseResultWrapper;
 import cn.kevin.service.AppPlanService;
 import cn.kevin.service.AppUpWordService;
+import cn.kevin.service.VultrService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +30,13 @@ public class AppRestController {
 
     private final AppPlanService appPlanService;
     private final AppUpWordService appUpWordService;
+    private final VultrService vultrService;
 
     @Autowired
-    public AppRestController(AppPlanService appPlanService, AppUpWordService appUpWordService) {
+    public AppRestController(AppPlanService appPlanService, AppUpWordService appUpWordService, VultrService vultrService) {
         this.appPlanService = appPlanService;
         this.appUpWordService = appUpWordService;
+        this.vultrService = vultrService;
     }
 
     @RequestMapping(value = "/listAllPlan", method = RequestMethod.GET)
@@ -103,4 +108,8 @@ public class AppRestController {
         return appUpWordService.save(word);
     }
 
+    @GetMapping(value = "/getVultr/{type}")
+    public VultrDomain getVultr(@PathVariable(value = "type") Integer type) {
+        return vultrService.get(VultrRequestTypeEnum.getByCode(type));
+    }
 }
