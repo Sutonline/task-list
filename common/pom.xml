@@ -12,6 +12,8 @@
 
     <properties>
         <okHttp.version>3.9.1</okHttp.version>
+        <aliyun.ecs.sdk.version>4.4.3</aliyun.ecs.sdk.version>
+        <aliyun.sdk.core.version>3.5.0</aliyun.sdk.core.version>
     </properties>
 
 
@@ -20,6 +22,16 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>${okHttp.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-ecs</artifactId>
+            <version>${aliyun.ecs.sdk.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>${aliyun.sdk.core.version}</version>
         </dependency>
     </dependencies>
 
