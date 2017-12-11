@@ -11,8 +11,6 @@ import cn.kevin.service.AliyunService;
  */
 public class AliyunServiceImpl implements AliyunService {
 
-
-
     @Override
     public AliyunDomain get(AliyunRequestTypeEnum typeEnum) {
         return null;

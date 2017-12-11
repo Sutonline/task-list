@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,7 +66,9 @@ public class VultrServiceImpl implements VultrService {
 
         if (bandResponse != null) {
             // 解析bandwidth
-            vultrDomain.setBandwidth(parseBandWidth(bandResponse));
+            VultrDomain.Bandwidth bandWidth = parseBandWidth(bandResponse);
+            vultrDomain.setBandWidth(bandWidth);
+            vultrDomain.setBandwidthVo(convert2Vo(bandWidth));
         }
 
         return vultrDomain;
@@ -72,7 +76,6 @@ public class VultrServiceImpl implements VultrService {
 
     @SuppressWarnings("unchecked")
     private VultrDomain.BasicInfo parseBasic(Response response) {
-        log.info("返回的response是: {}", response.body());
         String json = parseString(response);
         if (Strings.isNullOrEmpty(json)) {
             return null;
@@ -84,13 +87,31 @@ public class VultrServiceImpl implements VultrService {
     }
 
     private VultrDomain.Bandwidth parseBandWidth(Response response) {
-        log.info("返回的response是: {}", response);
         String json = parseString(response);
         if (Strings.isNullOrEmpty(json)) {
             return null;
         }
 
         return JSON.parseObject(json, VultrDomain.Bandwidth.class);
+    }
+
+    private VultrDomain.BandWidthVo convert2Vo(VultrDomain.Bandwidth bandwidth) {
+        if (bandwidth == null) {
+            return null;
+        }
+
+        VultrDomain.BandWidthVo vo = new VultrDomain.BandWidthVo();
+        List<VultrDomain.BandWidthItem> incomingBytes = new ArrayList<>();
+        List<VultrDomain.BandWidthItem> outgoingBytes = new ArrayList<>();
+        bandwidth.getIncoming_bytes().forEach(
+                list -> incomingBytes.add(new VultrDomain.BandWidthItem(list.get(0), list.get(1)))
+        );
+        bandwidth.getOutgoing_bytes().forEach(
+                list -> outgoingBytes.add(new VultrDomain.BandWidthItem(list.get(0), list.get(1)))
+        );
+        vo.setIncomingBytes(incomingBytes);
+        vo.setOutgoingBytes(outgoingBytes);
+        return vo;
     }
 
     private String parseString(Response response) {

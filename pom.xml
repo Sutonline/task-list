@@ -186,14 +186,14 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <excludes>
-                        <exclude>
+                        <!--<exclude>
                             <groupId>org.slf4j</groupId>
                             <artifactId>slf4j-log4j12</artifactId>
-                        </exclude>
-                        <exclude>
+                        </exclude>-->
+                        <!--<exclude>
                             <groupId>log4j</groupId>
                             <artifactId>log4j</artifactId>
-                        </exclude>
+                        </exclude>-->
                     </excludes>
                 </configuration>
             </plugin>
