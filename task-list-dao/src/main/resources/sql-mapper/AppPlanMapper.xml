@@ -86,7 +86,7 @@
     </insert>
 
     <update id="updateLast">
-        UPDATE APP_PLAN SET CREATE_TIME = null, CHECK_DATE = null where status != 1;
+        UPDATE app_plan SET CREATE_TIME = null, CHECK_DATE = null where status != 1;
     </update>
 
     <update id="update">
